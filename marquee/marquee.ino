@@ -51,12 +51,12 @@ int8_t getWifiQuality();
 // LED Settings
 const int offset = 1;
 int refresh = 0;
-String message = "hello";
-int spacer = 1;  // Dots between letters
-int width = 5 + spacer; // The font width is 5 pixels + spacer
+String message = "Start";
+int spacer = 1;                  // Dots between letters
+int width = 5 + spacer;          // The font width is 5 pixels + spacer
 Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
-String Wide_Clock_Style = "1";  //1="hh:mm Temp", 2="hh:mm:ss", 3="hh:mm"
-float UtcOffset;  // Time zone offsets that correspond with the CityID above (offset from GMT)
+String Wide_Clock_Style = "1";   // 1="hh:mm Temp", 2="hh:mm:ss", 3="hh:mm"
+float UtcOffset;                 // Time zone offsets that correspond with the CityID above (offset from GMT)
 
 // Time
 TimeDB TimeDB("");
@@ -357,7 +357,8 @@ void loop() {
       displayRefreshCount = minutesBetweenScrolling;
       String temperature = weatherClient.getTempRounded(0);
       String description = weatherClient.getDescription(0);
-      description.toUpperCase();
+      // Why have Weather description in uppercase letters?  Mats
+      //description.toUpperCase();
       String msg;
       msg += " ";
 
