@@ -44,7 +44,7 @@
 #define numberOfHours(_time_) (( _time_% SECS_PER_DAY) / SECS_PER_HOUR)
 #define elapsedDays(_time_) ( _time_ / SECS_PER_DAY)
 
-//declairing prototypes
+// Declairing prototypes
 void configModeCallback (WiFiManager *myWiFiManager);
 int8_t getWifiQuality();
 
@@ -52,11 +52,11 @@ int8_t getWifiQuality();
 const int offset = 1;
 int refresh = 0;
 String message = "hello";
-int spacer = 1;  // dots between letters
+int spacer = 1;  // Dots between letters
 int width = 5 + spacer; // The font width is 5 pixels + spacer
 Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
 String Wide_Clock_Style = "1";  //1="hh:mm Temp", 2="hh:mm:ss", 3="hh:mm"
-float UtcOffset;  //time zone offsets that correspond with the CityID above (offset from GMT)
+float UtcOffset;  // Time zone offsets that correspond with the CityID above (offset from GMT)
 
 // Time
 TimeDB TimeDB("");
@@ -322,11 +322,11 @@ void setup() {
 // Main Looop
 //************************************************************
 void loop() {
-  //Get some Weather Data to serve
+  // Get some Weather Data to serve
   if ((getMinutesFromLastRefresh() >= minutesBetweenDataRefresh) || lastEpoch == 0) {
     getWeatherData();
   }
-  checkDisplay(); // this will see if we need to turn it on or off for night mode.
+  checkDisplay();  // This will see if we need to turn it on or off for night mode.
 
   if (lastMinute != TimeDB.zeroPad(minute())) {
     lastMinute = TimeDB.zeroPad(minute());
@@ -339,7 +339,7 @@ void loop() {
     if (displayOn) {
       matrix.shutdown(false);
     }
-    matrix.fillScreen(LOW); // show black
+    matrix.fillScreen(LOW); // Show black
     if (OCTOPRINT_ENABLED) {
       if (displayOn && ((printerClient.isOperational() || printerClient.isPrinting()) || printerCount == 0)) {
         // This should only get called if the printer is actually running or if it has been 2 minutes since last check
@@ -370,23 +370,23 @@ void loop() {
       }
       msg += temperature + getTempSymbol() + "  ";
 
-      //show high/low temperature
+      // Show high/low temperature
       if (SHOW_HIGHLOW) {
-        msg += "High/Low:" + weatherClient.getHigh(0) + "/" + weatherClient.getLow(0) + " " + getTempSymbol() + "  ";
+        msg += "High/Low: " + weatherClient.getHigh(0) + "/" + weatherClient.getLow(0) + " " + getTempSymbol() + "  ";
       }
       
       if (SHOW_CONDITION) {
         msg += description + "  ";
       }
       if (SHOW_HUMIDITY) {
-        msg += "Humidity:" + weatherClient.getHumidityRounded(0) + "%  ";
+        msg += "Humidity: " + weatherClient.getHumidityRounded(0) + "%  ";
       }
       if (SHOW_WIND) {
         msg += "Wind: " + weatherClient.getDirectionText(0) + " @ " + weatherClient.getWindRounded(0) + " " + getSpeedSymbol() + "  ";
       }
       //line to show barometric pressure
       if (SHOW_PRESSURE) {
-        msg += "Pressure:" + weatherClient.getPressure(0) + getPressureSymbol() + "  ";
+        msg += "Pressure: " + weatherClient.getPressure(0) + getPressureSymbol() + "  ";
       }
      
       msg += marqueeMessage + " ";
@@ -425,7 +425,7 @@ void loop() {
     }
     if (Wide_Clock_Style == "2") {
       currentTime = currentTime + secondsIndicator(false) + TimeDB.zeroPad(second());
-      matrix.fillScreen(LOW); // show black
+      matrix.fillScreen(LOW); // Show black
     }
     if (Wide_Clock_Style == "3") {
       // No change this is normal clock display
@@ -474,7 +474,7 @@ boolean athentication() {
 }
 
 void handlePull() {
-  getWeatherData(); // this will force a data pull for new weather
+  getWeatherData(); // This will force a data pull for new weather
   displayWeatherData();
 }
 
@@ -485,7 +485,7 @@ void handleSaveWideClock() {
   if (numberOfHorizontalDisplays >= 8) {
     Wide_Clock_Style = server.arg("wideclockformat");
     writeCityIds();
-    matrix.fillScreen(LOW); // show black
+    matrix.fillScreen(LOW); // Show black
   }
   redirectHome();
 }
@@ -497,7 +497,7 @@ void handleSaveNews() {
   NEWS_ENABLED = server.hasArg("displaynews");
   NEWS_API_KEY = server.arg("newsApiKey");
   NEWS_SOURCE = server.arg("newssource");
-  matrix.fillScreen(LOW); // show black
+  matrix.fillScreen(LOW); // Show black
   writeCityIds();
   newsClient.updateNews();
   redirectHome();
@@ -514,7 +514,7 @@ void handleSaveOctoprint() {
   OctoPrintPort = server.arg("octoPrintPort").toInt();
   OctoAuthUser = server.arg("octoUser");
   OctoAuthPass = server.arg("octoPass");
-  matrix.fillScreen(LOW); // show black
+  matrix.fillScreen(LOW); // Show black
   writeCityIds();
   if (OCTOPRINT_ENABLED) {
     printerClient.getPrinterJobResults();
@@ -568,9 +568,9 @@ void handleLocations() {
   temp = server.arg("stationpassword");
   temp.toCharArray(www_password, sizeof(temp));
   weatherClient.setMetric(IS_METRIC);
-  matrix.fillScreen(LOW); // show black
+  matrix.fillScreen(LOW); // Show black
   writeCityIds();
-  getWeatherData(); // this will force a data pull for new weather
+  getWeatherData(); // This will force a data pull for new weather
   redirectHome();
 }
 
@@ -589,8 +589,8 @@ void handleForgetWifi() {
   if (!athentication()) {
     return server.requestAuthentication();
   }
-  //WiFiManager
-  //Local intialization. Once its business is done, there is no need to keep it around
+  // WiFiManager
+  // Local intialization. Once its business is done, there is no need to keep it around
   redirectHome();
   WiFiManager wifiManager;
   wifiManager.resetSettings();
@@ -833,7 +833,7 @@ void handleConfigure() {
   form.replace("%OPTIONS%", options);
   form.replace("%REFRESH_DISPLAY%", String(minutesBetweenScrolling));
 
-  server.sendContent(form); //Send another chunk of the form
+  server.sendContent(form); // Send another chunk of the form
 
   form = FPSTR(CHANGE_FORM3);
   String isUseSecurityChecked = "";
@@ -866,14 +866,14 @@ void handleDisplay() {
 }
 
 //***********************************************************************
-void getWeatherData() //client function to send/receive GET request data.
+void getWeatherData() // Client function to send/receive GET request data.
 {
   digitalWrite(externalLight, LOW);
   matrix.fillScreen(LOW); // show black
   Serial.println();
 
   if (displayOn) {
-    // only pull the weather data if display is on
+    // Only pull the weather data if display is on
     if (firstEpoch != 0) {
       centerPrint(hourMinutes(true), true);
     } else {
@@ -891,7 +891,7 @@ void getWeatherData() //client function to send/receive GET request data.
   }
 
   Serial.println("Updating Time...");
-  //Update the Time
+  // Update the Time
   matrix.drawPixel(0, 4, HIGH);
   matrix.drawPixel(0, 3, HIGH);
   matrix.drawPixel(0, 2, HIGH);
@@ -1059,10 +1059,8 @@ void displayWeatherData() {
     html += "</p></div></div><hr>";
   }
 
-
-  server.sendContent(String(html)); // spit out what we got
-  html = ""; // fresh start
-
+  server.sendContent(String(html)); // Spit out what we got
+  html = ""; // Fresh start
 
   if (OCTOPRINT_ENABLED) {
     html = "<div class='w3-cell-row'><b>OctoPrint Status:</b> ";
@@ -1174,7 +1172,6 @@ String getTempSymbol(bool forWeb) {
   return rtnValue;
 }
 
-
 String getSpeedSymbol() {
   String rtnValue = "mph";
   if (IS_METRIC) {
@@ -1193,7 +1190,7 @@ String getPressureSymbol()
   return rtnValue;
 }
 
-// converts the dBm to a range between 0 and 100%
+// Converts the dBm to a range between 0 and 100%
 int8_t getWifiQuality() {
   int32_t dbm = WiFi.RSSI();
   if (dbm <= -100) {
@@ -1242,11 +1239,11 @@ void enableDisplay(boolean enable) {
   if (enable) {
     if (getMinutesFromLastDisplay() >= minutesBetweenDataRefresh) {
       // The display has been off longer than the minutes between refresh -- need to get fresh data
-      lastEpoch = 0; // this should force a data pull of the weather
-      displayOffEpoch = 0;  // reset
+      lastEpoch = 0; // This should force a data pull of the weather
+      displayOffEpoch = 0;  // Reset
     }
     matrix.shutdown(false);
-    matrix.fillScreen(LOW); // show black
+    matrix.fillScreen(LOW); // Show black
     Serial.println("Display was turned ON: " + now());
   } else {
     matrix.shutdown(true);
@@ -1390,7 +1387,7 @@ void readCityIds() {
     if (line.indexOf("refreshRate=") >= 0) {
       minutesBetweenDataRefresh = line.substring(line.lastIndexOf("refreshRate=") + 12).toInt();
       if (minutesBetweenDataRefresh == 0) {
-        minutesBetweenDataRefresh = 15; // can't be zero
+        minutesBetweenDataRefresh = 15; // Can't be zero
       }
       Serial.println("minutesBetweenDataRefresh=" + String(minutesBetweenDataRefresh));
     }
@@ -1522,7 +1519,7 @@ void readCityIds() {
 }
 
 void scrollMessage(String msg) {
-  msg += " "; // add a space at the end
+  msg += " "; // Add a space at the end
   for ( int i = 0 ; i < width * msg.length() + matrix.width() - 1 - spacer; i++ ) {
     if (WEBSERVER_ENABLED) {
       server.handleClient();
@@ -1536,7 +1533,7 @@ void scrollMessage(String msg) {
 
     int letter = i / width;
     int x = (matrix.width() - 1) - i % width;
-    int y = (matrix.height() - 8) / 2; // center the text vertically
+    int y = (matrix.height() - 8) / 2; // Center the text vertically
 
     while ( x + width - spacer >= 0 && letter >= 0 ) {
       if ( letter < msg.length() ) {
@@ -1568,7 +1565,7 @@ void drawPiholeGraph() {
     totalRows = 0;
   }
 
-  // get the high value for the sample that will be on the screen
+  // Get the high value for the sample that will be on the screen
   for (int inx = count; inx >= totalRows; inx--) {
     if (piholeClient.getBlockedAds()[inx] > high) {
       high = (int)piholeClient.getBlockedAds()[inx];
