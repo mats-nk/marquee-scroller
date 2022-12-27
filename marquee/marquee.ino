@@ -179,13 +179,12 @@ static const char OCTO_FORM[] PROGMEM = "<form class='w3-container' action='/sav
                         "<button class='w3-button w3-block w3-green w3-section w3-padding' type='submit'>Save</button></form>"
                         "<script>function isNumberKey(e){var h=e.which?e.which:event.keyCode;return!(h>31&&(h<48||h>57))}</script>";
 
-
-
 const int TIMEOUT = 500; // 500 = 1/2 second
 int timeoutCount = 0;
 
 // Change the externalLight to the pin you wish to use if other than the Built-in LED
 int externalLight = LED_BUILTIN; // LED_BUILTIN is is the built in LED on the Wemos
+
 
 void setup() {
   Serial.begin(115200);
@@ -196,14 +195,14 @@ void setup() {
   // Initialize digital pin for LED
   pinMode(externalLight, OUTPUT);
 
-  //New Line to clear from start garbage
+  // New Line to clear from start garbage
   Serial.println();
 
   readCityIds();
 
   Serial.println("Number of LED Displays: " + String(numberOfHorizontalDisplays));
-  // initialize dispaly
-  matrix.setIntensity(0); // Use a value between 0 and 15 for brightness
+  // Initialize dispaly
+  matrix.setIntensity(0);   // Use a value between 0 and 15 for brightness
 
   int maxPos = numberOfHorizontalDisplays * numberOfVerticalDisplays;
   for (int i = 0; i < maxPos; i++) {
@@ -212,7 +211,7 @@ void setup() {
   }
 
   Serial.println("matrix created");
-  matrix.fillScreen(LOW); // show black
+  matrix.fillScreen(LOW);   // Show black
   centerPrint("hello");
 
   tone(BUZZER_PIN, 415, 500);
@@ -235,16 +234,16 @@ void setup() {
   matrix.setIntensity(displayIntensity);
   //noTone(BUZZER_PIN);
 
-  //WiFiManager
-  //Local intialization. Once its business is done, there is no need to keep it around
+  // WiFiManager
+  // Local intialization. Once its business is done, there is no need to keep it around
   WiFiManager wifiManager;
 
   // Uncomment for testing wifi manager
-  //wifiManager.resetSettings();
+  // wifiManager.resetSettings();
   wifiManager.setAPCallback(configModeCallback);
 
-  //Custom Station (client) Static IP Configuration - Set custom IP for your Network (IP, Gateway, Subnet mask)
-  //wifiManager.setSTAStaticIPConfig(IPAddress(192,168,0,99), IPAddress(192,168,0,1), IPAddress(255,255,255,0));
+  // Custom Station (client) Static IP Configuration - Set custom IP for your Network (IP, Gateway, Subnet mask)
+  // wifiManager.setSTAStaticIPConfig(IPAddress(192,168,0,99), IPAddress(192,168,0,1), IPAddress(255,255,255,0));
 
   String hostname(HOSTNAME);
   hostname += String(ESP.getChipId(), HEX);
@@ -255,7 +254,7 @@ void setup() {
     delay(5000);
   }
 
-  // print the received signal strength:
+  // Print the received signal strength:
   Serial.print("Signal Strength (RSSI): ");
   Serial.print(getWifiQuality());
   Serial.println("%");
@@ -317,6 +316,7 @@ void setup() {
 
   flashLED(1, 500);
 }
+
 
 //************************************************************
 // Main Looop
@@ -385,7 +385,7 @@ void loop() {
       if (SHOW_WIND) {
         msg += "Wind: " + weatherClient.getDirectionText(0) + " @ " + weatherClient.getWindRounded(0) + " " + getSpeedSymbol() + "  ";
       }
-      //line to show barometric pressure
+      // Line to show barometric pressure
       if (SHOW_PRESSURE) {
         msg += "Pressure: " + weatherClient.getPressure(0) + getPressureSymbol() + "  ";
       }
@@ -471,11 +471,11 @@ boolean athentication() {
   if (IS_BASIC_AUTH) {
     return server.authenticate(www_username, www_password);
   }
-  return true; // Authentication not required
+  return true;       // Authentication not required
 }
 
 void handlePull() {
-  getWeatherData(); // This will force a data pull for new weather
+  getWeatherData();  // This will force a data pull for new weather
   displayWeatherData();
 }
 
@@ -569,9 +569,9 @@ void handleLocations() {
   temp = server.arg("stationpassword");
   temp.toCharArray(www_password, sizeof(temp));
   weatherClient.setMetric(IS_METRIC);
-  matrix.fillScreen(LOW); // Show black
+  matrix.fillScreen(LOW);  // Show black
   writeCityIds();
-  getWeatherData(); // This will force a data pull for new weather
+  getWeatherData();        // This will force a data pull for new weather
   redirectHome();
 }
 
@@ -650,7 +650,7 @@ void handleNewsConfigure() {
   form.replace("%NEWSCHECKED%", isNewsDisplayedChecked);
   form.replace("%NEWSKEY%", NEWS_API_KEY);
   form.replace("%NEWSSOURCE%", NEWS_SOURCE);
-  server.sendContent(form); //Send news form
+  server.sendContent(form);    // Send news form
 
   sendFooter();
 
@@ -752,7 +752,6 @@ void handleConfigure() {
   form.replace("%TIMEDBKEY%", TIMEDBKEY);
   form.replace("%WEATHERKEY%", APIKEY);
 
-
   String cityName = "";
   if (weatherClient.getCity(0) != "") {
     cityName = weatherClient.getCity(0) + ", " + weatherClient.getCountry(0);
@@ -795,7 +794,6 @@ void handleConfigure() {
     isHighlowChecked = "checked='checked'";
   }
   form.replace("%HIGHLOW_CHECKED%", isHighlowChecked);
-
   
   String is24hourChecked = "";
   if (IS_24HOUR) {
@@ -834,7 +832,7 @@ void handleConfigure() {
   form.replace("%OPTIONS%", options);
   form.replace("%REFRESH_DISPLAY%", String(minutesBetweenScrolling));
 
-  server.sendContent(form); // Send another chunk of the form
+  server.sendContent(form);   // Send another chunk of the form
 
   form = FPSTR(CHANGE_FORM3);
   String isUseSecurityChecked = "";
@@ -845,7 +843,7 @@ void handleConfigure() {
   form.replace("%USERID%", String(www_username));
   form.replace("%STATIONPASSWORD%", String(www_password));
 
-  server.sendContent(form); // Send the second chunk of Data
+  server.sendContent(form);   // Send the second chunk of Data
 
   sendFooter();
 
@@ -867,7 +865,7 @@ void handleDisplay() {
 }
 
 //***********************************************************************
-void getWeatherData() // Client function to send/receive GET request data.
+void getWeatherData()         // Client function to send/receive GET request data.
 {
   digitalWrite(externalLight, LOW);
   matrix.fillScreen(LOW); // show black
@@ -1060,8 +1058,8 @@ void displayWeatherData() {
     html += "</p></div></div><hr>";
   }
 
-  server.sendContent(String(html)); // Spit out what we got
-  html = ""; // Fresh start
+  server.sendContent(String(html));  // Spit out what we got
+  html = "";                         // Fresh start
 
   if (OCTOPRINT_ENABLED) {
     html = "<div class='w3-cell-row'><b>OctoPrint Status:</b> ";
@@ -1240,7 +1238,7 @@ void enableDisplay(boolean enable) {
   if (enable) {
     if (getMinutesFromLastDisplay() >= minutesBetweenDataRefresh) {
       // The display has been off longer than the minutes between refresh -- need to get fresh data
-      lastEpoch = 0; // This should force a data pull of the weather
+      lastEpoch = 0;        // This should force a data pull of the weather
       displayOffEpoch = 0;  // Reset
     }
     matrix.shutdown(false);
@@ -1520,7 +1518,7 @@ void readCityIds() {
 }
 
 void scrollMessage(String msg) {
-  msg += " "; // Add a space at the end
+  msg += " ";  // Add a space at the end
   for ( int i = 0 ; i < width * msg.length() + matrix.width() - 1 - spacer; i++ ) {
     if (WEBSERVER_ENABLED) {
       server.handleClient();
@@ -1534,7 +1532,7 @@ void scrollMessage(String msg) {
 
     int letter = i / width;
     int x = (matrix.width() - 1) - i % width;
-    int y = (matrix.height() - 8) / 2; // Center the text vertically
+    int y = (matrix.height() - 8) / 2;  // Center the text vertically
 
     while ( x + width - spacer >= 0 && letter >= 0 ) {
       if ( letter < msg.length() ) {
@@ -1545,7 +1543,7 @@ void scrollMessage(String msg) {
       x -= width;
     }
 
-    matrix.write(); // Send bitmap to display
+    matrix.write();                     // Send bitmap to display
     delay(displayScrollSpeed);
   }
   matrix.setCursor(0, 0);

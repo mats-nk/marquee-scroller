@@ -2,23 +2,20 @@
 
 Copyright (c) 2018 David Payne
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without
+limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so, subject to the following
+conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all copies or substantial
+portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 /******************************************************************************
@@ -56,46 +53,42 @@ SOFTWARE.
 // Start Settings
 //******************************
 
-String TIMEDBKEY = ""; // Your API Key from https://timezonedb.com/register
-String APIKEY = ""; // Your API Key from http://openweathermap.org/
-// Default City Location (use http://openweathermap.org/find to find city ID)
-int CityIDs[] = { 5304391 }; //Only USE ONE for weather marquee
+String TIMEDBKEY = "";                     // Your API Key from https://timezonedb.com/register
+String APIKEY = "";                        // Your API Key from http://openweathermap.org/
+int CityIDs[] = { 5304391 };               // Default City Location (use http://openweathermap.org/find to find city ID)
 String marqueeMessage = "";
-boolean IS_METRIC = false; // false = Imperial and true = Metric
-boolean IS_24HOUR = false; // 23:00 millitary 24 hour clock
-boolean IS_PM = true; // Show PM indicator on Clock when in AM/PM mode
-const int WEBSERVER_PORT = 80; // The port you can access this device on over HTTP
-const boolean WEBSERVER_ENABLED = true;  // Device will provide a web interface via http://[ip]:[port]/
-boolean IS_BASIC_AUTH = false;  // Use Basic Authorization for Configuration security on Web Interface
-char* www_username = "admin";  // User account for the Web Interface
-char* www_password = "password";  // Password for the Web Interface
-int minutesBetweenDataRefresh = 15;  // Time in minutes between data refresh (default 15 minutes)
-int minutesBetweenScrolling = 1; // Time in minutes between scrolling data (default 1 minutes and max is 10)
-int displayScrollSpeed = 25; // In milliseconds -- Configurable by the web UI (slow = 35, normal = 25, fast = 15, very fast = 5)
-boolean flashOnSeconds = true; // when true the : character in the time will flash on and off as a seconds indicator
+boolean IS_METRIC = false;                 // false = Imperial and true = Metric
+boolean IS_24HOUR = false;                 // 23:00 millitary 24 hour clock
+boolean IS_PM = true;                      // Show PM indicator on Clock when in AM/PM mode
+const int WEBSERVER_PORT = 80;             // The port you can access this device on over HTTP
+const boolean WEBSERVER_ENABLED = true;    // Device will provide a web interface via http://[ip]:[port]/
+boolean IS_BASIC_AUTH = false;             // Use Basic Authorization for Configuration security on Web Interface
+char* www_username = "admin";              // User account for the Web Interface
+char* www_password = "password";           // Password for the Web Interface
+int minutesBetweenDataRefresh = 15;        // Time in minutes between data refresh (default 15 minutes)
+int minutesBetweenScrolling = 1;           // Time in minutes between scrolling data (default 1 minutes and max is 10)
+int displayScrollSpeed = 25;               // In milliseconds -- Configurable by the web UI (slow = 35, normal = 25, fast = 15, very fast = 5)
+boolean flashOnSeconds = true;             // When true the : character in the time will flash on and off as a seconds indicator
 
 boolean NEWS_ENABLED = true;
-String NEWS_API_KEY = ""; // Get your News API Key from https://newsapi.org
-String NEWS_SOURCE = "reuters";  // https://newsapi.org/sources to get full list of news sources available
+String NEWS_API_KEY = "";                  // Get your News API Key from https://newsapi.org
+String NEWS_SOURCE = "reuters";            // https://newsapi.org/sources to get full list of news sources available
 
 // Display Settings
-// CLK -> D5 (SCK)  
-// CS  -> D6 
+// CLK -> D5 (SCK)
+// CS  -> D6
 // DIN -> D7 (MOSI)
-const int pinCS = D6; // Attach CS to this pin, DIN to MOSI and CLK to SCK (cf http://arduino.cc/en/Reference/SPI )
-int displayIntensity = 1;  //(This can be set from 0 - 15)
-const int numberOfHorizontalDisplays = 4; // default 4 for standard 4 x 1 display Max size of 16
-const int numberOfVerticalDisplays = 1; // default 1 for a single row height
-/* set ledRotation for LED Display panels (3 is default)
-0: no rotation
-1: 90 degrees clockwise
-2: 180 degrees
-3: 90 degrees counter clockwise (default)
-*/
+const int pinCS = D6;                      // Attach CS to this pin, DIN to MOSI and CLK to SCK (cf http://arduino.cc/en/Reference/SPI )
+int displayIntensity = 1;                  // (This can be set from 0 - 15)
+const int numberOfHorizontalDisplays = 12; // default 4 for standard 4 x 1 display Max size of 16
+const int numberOfVerticalDisplays = 1;    // default 1 for a single row height
+// Set ledRotation for LED Display panels (3 is default)
+// 0: No rotation           | 2: 180 degrees
+// 1: 90 degrees clockwise  | 3: 90 degrees counter clockwise (default)
 int ledRotation = 3;
 
-String timeDisplayTurnsOn = "06:30";  // 24 Hour Format HH:MM -- Leave blank for always on. (ie 05:30)
-String timeDisplayTurnsOff = "23:00"; // 24 Hour Format HH:MM -- Leave blank for always on. Both must be set to work.
+String timeDisplayTurnsOn = "04:30";       // 24 Hour Format HH:MM -- Leave blank for always on. (ie 05:30)
+String timeDisplayTurnsOff = "22:00";      // 24 Hour Format HH:MM -- Leave blank for always on. Both must be set to work.
 
 // OctoPrint Monitoring -- Monitor your 3D printer OctoPrint Server
 boolean OCTOPRINT_ENABLED = false;
