@@ -31,8 +31,8 @@ private:
   String myCityIDs = "";
   String myApiKey = "";
   String units = "";
-  
-  const char* servername = "api.openweathermap.org";  // remote server we will connect to
+
+  const char* servername = "api.openweathermap.org";  // Remote server we will connect to
 
   typedef struct {
     String lat;

@@ -27,7 +27,7 @@
 
 #include "Settings.h"
 
-#define VERSION "3.01"
+#define VERSION "3.01-mk_01"
 
 #define HOSTNAME "CLOCK-"
 #define CONFIG "/conf.txt"
@@ -179,11 +179,11 @@ static const char OCTO_FORM[] PROGMEM = "<form class='w3-container' action='/sav
                         "<button class='w3-button w3-block w3-green w3-section w3-padding' type='submit'>Save</button></form>"
                         "<script>function isNumberKey(e){var h=e.which?e.which:event.keyCode;return!(h>31&&(h<48||h>57))}</script>";
 
-const int TIMEOUT = 500; // 500 = 1/2 second
+const int TIMEOUT = 500;          // 500 = 1/2 second
 int timeoutCount = 0;
 
 // Change the externalLight to the pin you wish to use if other than the Built-in LED
-int externalLight = LED_BUILTIN; // LED_BUILTIN is is the built in LED on the Wemos
+int externalLight = LED_BUILTIN;  // LED_BUILTIN is is the built in LED on the Wemos
 
 
 void setup() {
@@ -202,7 +202,7 @@ void setup() {
 
   Serial.println("Number of LED Displays: " + String(numberOfHorizontalDisplays));
   // Initialize dispaly
-  matrix.setIntensity(0);   // Use a value between 0 and 15 for brightness
+  matrix.setIntensity(0);         // Use a value between 0 and 15 for brightness
 
   int maxPos = numberOfHorizontalDisplays * numberOfVerticalDisplays;
   for (int i = 0; i < maxPos; i++) {
@@ -211,7 +211,7 @@ void setup() {
   }
 
   Serial.println("matrix created");
-  matrix.fillScreen(LOW);   // Show black
+  matrix.fillScreen(LOW);         // Show black
   centerPrint("hello");
 
   tone(BUZZER_PIN, 415, 500);
@@ -247,7 +247,7 @@ void setup() {
 
   String hostname(HOSTNAME);
   hostname += String(ESP.getChipId(), HEX);
-  if (!wifiManager.autoConnect((const char *)hostname.c_str())) {// new addition
+  if (!wifiManager.autoConnect((const char *)hostname.c_str())) {  // New addition
     delay(3000);
     WiFi.disconnect(true);
     ESP.reset();
@@ -339,7 +339,7 @@ void loop() {
     if (displayOn) {
       matrix.shutdown(false);
     }
-    matrix.fillScreen(LOW); // Show black
+    matrix.fillScreen(LOW);  // Show black
     if (OCTOPRINT_ENABLED) {
       if (displayOn && ((printerClient.isOperational() || printerClient.isPrinting()) || printerCount == 0)) {
         // This should only get called if the printer is actually running or if it has been 2 minutes since last check
@@ -426,7 +426,7 @@ void loop() {
     }
     if (Wide_Clock_Style == "2") {
       currentTime = currentTime + secondsIndicator(false) + TimeDB.zeroPad(second());
-      matrix.fillScreen(LOW); // Show black
+      matrix.fillScreen(LOW);  // Show black
     }
     if (Wide_Clock_Style == "3") {
       // No change this is normal clock display
@@ -486,7 +486,7 @@ void handleSaveWideClock() {
   if (numberOfHorizontalDisplays >= 8) {
     Wide_Clock_Style = server.arg("wideclockformat");
     writeCityIds();
-    matrix.fillScreen(LOW); // Show black
+    matrix.fillScreen(LOW);  // Show black
   }
   redirectHome();
 }
@@ -498,7 +498,7 @@ void handleSaveNews() {
   NEWS_ENABLED = server.hasArg("displaynews");
   NEWS_API_KEY = server.arg("newsApiKey");
   NEWS_SOURCE = server.arg("newssource");
-  matrix.fillScreen(LOW); // Show black
+  matrix.fillScreen(LOW);  // Show black
   writeCityIds();
   newsClient.updateNews();
   redirectHome();
@@ -650,7 +650,7 @@ void handleNewsConfigure() {
   form.replace("%NEWSCHECKED%", isNewsDisplayedChecked);
   form.replace("%NEWSKEY%", NEWS_API_KEY);
   form.replace("%NEWSSOURCE%", NEWS_SOURCE);
-  server.sendContent(form);    // Send news form
+  server.sendContent(form);  // Send news form
 
   sendFooter();
 
@@ -1174,7 +1174,7 @@ String getTempSymbol(bool forWeb) {
 String getSpeedSymbol() {
   String rtnValue = "mph";
   if (IS_METRIC) {
-    rtnValue = "kph";
+    rtnValue = "m/s";   // m/s is the metric, check SI
   }
   return rtnValue;
 }
@@ -1237,12 +1237,12 @@ void enableDisplay(boolean enable) {
   displayOn = enable;
   if (enable) {
     if (getMinutesFromLastDisplay() >= minutesBetweenDataRefresh) {
-      // The display has been off longer than the minutes between refresh -- need to get fresh data
-      lastEpoch = 0;        // This should force a data pull of the weather
-      displayOffEpoch = 0;  // Reset
+                             // The display has been off longer than the minutes between refresh -- need to get fresh data
+      lastEpoch = 0;         // This should force a data pull of the weather
+      displayOffEpoch = 0;   // Reset
     }
     matrix.shutdown(false);
-    matrix.fillScreen(LOW); // Show black
+    matrix.fillScreen(LOW);  // Show black
     Serial.println("Display was turned ON: " + now());
   } else {
     matrix.shutdown(true);
@@ -1254,7 +1254,7 @@ void enableDisplay(boolean enable) {
 // Toggle on and off the display if user defined times
 void checkDisplay() {
   if (timeDisplayTurnsOn == "" || timeDisplayTurnsOff == "") {
-    return; // nothing to do
+    return;  // Nothing to do
   }
   String currentTime = TimeDB.zeroPad(hour()) + ":" + TimeDB.zeroPad(minute());
 
@@ -1612,7 +1612,6 @@ void centerPrint(String msg, boolean extraStuff) {
       int numberOfLightPixels = (printerClient.getProgressCompletion().toFloat() / float(100)) * (matrix.width() - 1);
       matrix.drawFastHLine(0, 7, numberOfLightPixels, HIGH);
     }
-    
   }
   
   matrix.setCursor(x, 0);

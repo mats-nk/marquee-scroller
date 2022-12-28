@@ -94,7 +94,7 @@ void OpenWeatherMapClient::updateWeather() {
     return;
   }
 
-  weatherClient.stop(); //stop client
+  weatherClient.stop();  // Stop client
 
   if (root.measureLength() <= 150) {
     Serial.println("Error Does not look like we got the data.  Size: " + String(root.measureLength()));
@@ -125,14 +125,14 @@ void OpenWeatherMapClient::updateWeather() {
     weathers[inx].timeZone = (const char*)root["list"][inx]["sys"]["timezone"];
 
     if (units == "metric") {
-      // convert to kph from m/s
-      float f = (weathers[inx].wind.toFloat() * 3.6);
-      weathers[inx].wind = String(f);
+      // Convert to kph from m/s
+      //float f = (weathers[inx].wind.toFloat() * 3.6);
+      //weathers[inx].wind = String(f);
     }
 
     if (units != "metric")
     {
-      float p = (weathers[inx].pressure.toFloat() * 0.0295301); //convert millibars to inches
+      float p = (weathers[inx].pressure.toFloat() * 0.0295301);  // Convert millibars to inches
       weathers[inx].pressure = String(p);
     }
     
@@ -151,7 +151,6 @@ void OpenWeatherMapClient::updateWeather() {
     Serial.println("icon: " + weathers[inx].icon);
     Serial.println("timezone: " + String(getTimeZone(inx)));
     Serial.println();
-    
   }
 }
 
