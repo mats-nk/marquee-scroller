@@ -8,7 +8,7 @@ Convert to kph from m/s
 
 Language:
 ---------
-row 290 ish weekday names
+Row 290 ish has weekday names
 
 
 Other ToDo
@@ -20,6 +20,20 @@ Other ToDo
 - LDR to automate light intensity
 
 - PIR for proximity detection
+
+
+OpenWeatherMapClient.cpp
+------------------------
+Row 128, Commented out "Convert to kph from m/s"
+
+Row 241, String arr[] = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+
+Row 290ish has weekday names
+
+
+TimeDB.cpp
+----------
+Row 126 Month names
 
 
 
