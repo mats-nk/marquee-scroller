@@ -35,19 +35,21 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266HTTPUpdateServer.h>
-#include <WiFiManager.h>                       // --> https://github.com/tzapu/WiFiManager
+#include <WiFiManager.h>                       // https://github.com/tzapu/WiFiManager
 #include <ESP8266mDNS.h>
 #include <ArduinoOTA.h>
 #include "FS.h"
 #include <SPI.h>
-#include <Adafruit_GFX.h>                      // --> https://github.com/adafruit/Adafruit-GFX-Library
-#include <Max72xxPanel.h>                      // --> https://github.com/markruys/arduino-Max72xxPanel
+#include <Adafruit_GFX.h>                      // https://github.com/adafruit/Adafruit-GFX-Library
+#include <Max72xxPanel.h>                      // https://github.com/markruys/arduino-Max72xxPanel
 #include <pgmspace.h>
 #include "OpenWeatherMapClient.h"
-#include "TimeDB.h"
+#include "TimeDB.h"                            // https://github.com/PaulStoffregen/Time
 #include "NewsApiClient.h" 
 #include "OctoPrintClient.h"
 #include "PiHoleClient.h"
+                                               // https://github.com/squix78/json-streaming-parser
+
 
 //******************************
 // Start Settings
@@ -77,11 +79,11 @@ String NEWS_SOURCE              = "reuters";   // https://newsapi.org/sources to
 // Display wiring  |  CLK -> D5 (SCK)
 //                 |  CS  -> D6 (Configurable via pinCS)
 //                 |  DIN -> D7 (MOSI)
-const int pinCS                 = D6;          // Attach CS to this pin, DIN to MOSI and CLK to SCK (cf http://arduino.cc/en/Reference/SPI )
-int displayIntensity            = 1;           // (This can be set from 0 - 15)
+const int pinCS                      = D6;     // Attach CS to this pin, DIN to MOSI and CLK to SCK (cf http://arduino.cc/en/Reference/SPI )
+int displayIntensity                 = 1;      // (This can be set from 0 - 15)
 const int numberOfHorizontalDisplays = 12;     // Default 4 for standard 4 x 1 display Max size of 16
 const int numberOfVerticalDisplays   = 1;      // Default 1 for a single row height
-int ledRotation                 = 3;           // Set ledRotation for LED Display panels (3 is default)
+int ledRotation                      = 3;      // Set ledRotation for LED Display panels (3 is default)
                                                // 0: No rotation           |   2: 180 degrees
                                                // 1: 90 degrees clockwise  |   3: 90 degrees counter clockwise (default)
 

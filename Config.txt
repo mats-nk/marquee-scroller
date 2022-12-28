@@ -1,0 +1,15 @@
+OpenWeather
+-----------
+APIKEY    = 
+CityIDs[] = 
+
+News
+----
+NEWS_API_KEY = 
+NEWS_SOURCE  = 
+
+TimeDB
+-------
+TIMEDBKEY = 
+
+
