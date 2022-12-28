@@ -24,7 +24,7 @@ SOFTWARE.
 #include "PiHoleClient.h"
 
 PiHoleClient::PiHoleClient() {
-  //Constructor
+  // Constructor
 }
 
 void PiHoleClient::getPiHoleData(String server, int port) {
@@ -35,10 +35,10 @@ void PiHoleClient::getPiHoleData(String server, int port) {
 
   String apiGetData = "http://" + server + ":" + String(port) + "/admin/api.php?summary";
   Serial.println("Sending: " + apiGetData);
-  HTTPClient http;  //Object of class HTTPClient
-  http.begin(wifiClient, apiGetData);// get the result
+  HTTPClient http;                     // Object of class HTTPClient
+  http.begin(wifiClient, apiGetData);  // Get the result
   int httpCode = http.GET();
-  //Check the returning code
+  // Check the returning code
   if (httpCode > 0) {
     response = http.getString();
     http.end();   //Close connection
@@ -55,7 +55,7 @@ void PiHoleClient::getPiHoleData(String server, int port) {
     Serial.println(errorMessage);
     return;
   }
-  
+
   const size_t bufferSize = 2*JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(17) + 470;
   DynamicJsonBuffer jsonBuffer(bufferSize);
 
@@ -103,13 +103,13 @@ void PiHoleClient::getTopClientsBlocked(String server, int port, String apiKey) 
 
   String apiGetData = "http://" + server + ":" + String(port) + "/admin/api.php?topClientsBlocked=3&auth=" + apiKey;
   Serial.println("Sending: " + apiGetData);
-  HTTPClient http;  //Object of class HTTPClient
-  http.begin(wifiClient, apiGetData);// get the result
+  HTTPClient http;                     // Object of class HTTPClient
+  http.begin(wifiClient, apiGetData);  // Get the result
   int httpCode = http.GET();
-  //Check the returning code
+  // Check the returning code
   if (httpCode > 0) {
     response = http.getString();
-    http.end();   //Close connection
+    http.end();                        // Close connection
     if (httpCode != 200) {
       // Bad Response Code
       errorMessage = "Error response (" + String(httpCode) + "): " + response;
@@ -163,22 +163,22 @@ void PiHoleClient::getGraphData(String server, int port) {
   int countBracket = 0;
   blockedCount = 0;
 
-  if (httpCode > 0) {  // checks for connection
+  if (httpCode > 0) {  // Checks for connection
     Serial.printf("[HTTP] GET... code: %d\n", httpCode);
     if(httpCode == HTTP_CODE_OK) {
-      // get length of document (is -1 when Server sends no Content-Length header)
+      // Get length of document (is -1 when Server sends no Content-Length header)
       int len = http.getSize();
-      // create buffer for read
+      // Create buffer for read
       char buff[128] = { 0 };
-      // get tcp stream
+      // Get tcp stream
       WiFiClient * stream = http.getStreamPtr();
-      // read all data from server
+      // Read all data from server
       Serial.println("Start reading...");
       while(http.connected() && (len > 0 || len == -1)) {
-        // get available data size
+        // Get available data size
         size_t size = stream->available();
         if(size) {
-          // read up to 128 byte
+          // Read up to 128 byte
           int c = stream->readBytes(buff, ((size > sizeof(buff)) ? sizeof(buff) : size));
           for(int i=0;i<c;i++) {
             if (track && countBracket >= 3) {
@@ -200,7 +200,7 @@ void PiHoleClient::getGraphData(String server, int port) {
               track = true; 
             }
           }
-            
+
           if(len > 0)
             len -= c;
           }
@@ -210,11 +210,10 @@ void PiHoleClient::getGraphData(String server, int port) {
     http.end();
   } else {
     errorMessage = "Connection for Pi-Hole data failed: " + String(apiGetData);
-    Serial.println(errorMessage); //error message if no client connect
+    Serial.println(errorMessage);  // Error message if no client connect
     Serial.println();
     return;
   }
-
 
   Serial.println("High Value: " + String(blockedHigh));
   Serial.println("Count: " + String(blockedCount));
@@ -271,7 +270,6 @@ String PiHoleClient::getClientsEverSeen() {
   String getReplyIP();
   String getPrivacyLevel();
  */
-
 
 String PiHoleClient::getPiHoleStatus() {
   return piHoleData.piHoleStatus;

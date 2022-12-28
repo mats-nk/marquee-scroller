@@ -21,10 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 #include "NewsApiClient.h"
-
-
 
 #define arr_len( x )  ( sizeof( x ) / sizeof( *x ) )
 
@@ -58,24 +55,24 @@ void NewsApiClient::updateNews() {
   if (httpCode > 0) {  // checks for connection
     Serial.printf("[HTTP] GET... code: %d\n", httpCode);
     if(httpCode == HTTP_CODE_OK) {
-      // get lenght of document (is -1 when Server sends no Content-Length header)
+      // Get lenght of document (is -1 when Server sends no Content-Length header)
       int len = http.getSize();
-      // create buffer for read
+      // Create buffer for read
       char buff[128] = { 0 };
       // get tcp stream
       WiFiClient * stream = http.getStreamPtr();
-      // read all data from server
+      // Read all data from server
       Serial.println("Start parsing...");
       while(http.connected() && (len > 0 || len == -1)) {
-        // get available data size
+        // Get available data size
         size_t size = stream->available();
         if(size) {
-          // read up to 128 byte
+          // Read up to 128 byte
           int c = stream->readBytes(buff, ((size > sizeof(buff)) ? sizeof(buff) : size));
           for(int i=0;i<c;i++) {
             parser.parse(buff[i]); 
           }
-            
+
           if(len > 0)
             len -= c;
           }
@@ -120,7 +117,7 @@ void NewsApiClient::key(String key) {
 
 void NewsApiClient::value(String value) {
   if (counterTitle == 10) {
-    // we are full so return
+    // We are full so return
     return;
   }
   if (currentKey == "title") {
@@ -142,6 +139,7 @@ void NewsApiClient::endArray() {
 
 void NewsApiClient::endObject() {
 }
+
 void NewsApiClient::startArray() {
 }
 

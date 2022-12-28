@@ -38,7 +38,7 @@ class TimeDB
     String zeroPad(int number);
 
   private:
-    const char* servername = "api.timezonedb.com";  // remote server we will connect to
+    const char* servername = "api.timezonedb.com";  // Remote server we will connect to
     long localMillisAtUpdate;
     String myApiKey;
     String myLat;

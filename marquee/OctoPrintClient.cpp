@@ -65,7 +65,7 @@ void OctoPrintClient::getPrinterJobResults() {
   Serial.println("Getting Octoprint Data");
   Serial.println(apiGetData);
   result = "";
-  if (printClient.connect(myServer, myPort)) {  //starts client connection, checks for connection
+  if (printClient.connect(myServer, myPort)) {  // Starts client connection, checks for connection
     printClient.println(apiGetData);
     printClient.println("Host: " + String(myServer) + ":" + String(myPort));
     printClient.println("X-Api-Key: " + myApiKey);
@@ -81,9 +81,9 @@ void OctoPrintClient::getPrinterJobResults() {
       printerData.error = "Octoprint Connection Failed";
       return;
     }
-  } 
+  }
   else {
-    Serial.println("Connection for OctoPrint data failed: " + String(myServer) + ":" + String(myPort)); //error message if no client connect
+    Serial.println("Connection for OctoPrint data failed: " + String(myServer) + ":" + String(myPort));  // Error message if no client connect
     Serial.println();
     resetPrintData();
       printerData.error = "Connection for OctoPrint data failed: " + String(myServer) + ":" + String(myPort);
@@ -139,7 +139,7 @@ void OctoPrintClient::getPrinterJobResults() {
     Serial.println("Printer Not Opperational");
   }
   
-  printClient.stop(); //stop client
+  printClient.stop();  // Stop client
 }
 
 // Reset all PrinterData

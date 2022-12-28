@@ -164,7 +164,6 @@ String TimeDB::getMonthName() {
   return rtnValue;
 }
 
-
 String TimeDB::getAmPm() {
   String ampmValue = "AM";
   if (isPM()) {

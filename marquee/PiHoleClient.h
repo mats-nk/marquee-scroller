@@ -34,7 +34,7 @@ private:
   WiFiClient getSubmitRequest(String apiGetData, String myServer, int myPort);
   void resetClientsBlocked();
   void resetBlockedGraphData();
-  
+
   String errorMessage = "";
 
   int blocked[144] = {0};  
@@ -66,10 +66,9 @@ private:
     String privacy_level;
     String piHoleStatus;
   } phd;
-  
+
   phd piHoleData;
-  
-  
+
 public:
   PiHoleClient();
   void getPiHoleData(String server, int port);
@@ -92,7 +91,7 @@ public:
   String getReplyCNAME();
   String getReplyIP();
   String getPrivacyLevel();
-  
+
   */
   String getPiHoleStatus();
   String getError();

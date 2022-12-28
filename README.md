@@ -86,14 +86,13 @@ Editing the **Settings.h** file is totally optional and not required.  All API K
 NOTE: The settings in the Settings.h are the default settings for the first loading. After loading you will manage changes to the settings via the Web Interface. If you want to change settings again in the settings.h, you will need to erase the file system on the Wemos or use the “Reset Settings” option in the Web Interface.  
 
 ## Web Interface
-The Marquee Scroller uses the **WiFiManager** so when it can't find the last network it was connected to 
-it will become a **AP Hotspot** -- connect to it with your phone and you can then enter your WiFi connection information.
+The Marquee Scroller uses the **WiFiManager** so when it can't find the last network it was connected to it will become a **AP Hotspot** -- connect to it with your phone and you can then enter your WiFi connection information.
 
-After connected to your WiFi network it will display the IP addressed assigned to it and that can be 
-used to open a browser to the Web Interface.  You will be able to manage your API Keys through the web interface.  
-The default user / password for the configuration page is: admin / password  
+After connected to your WiFi network it will display the IP addressed assigned to it and that can be used to open a browser to the Web Interface.  You will be able to manage your API Keys through the web interface.  
 
-The Clock will display the time of the City selected for the weather.  
+The default user / password for the configuration page is: **admin / password**
+
+The Clock will display the time of the City selected for the weather.
 
 <p align="center">
   <img src="/images/2018-04-19%2006.58.05.png" width="200"/>

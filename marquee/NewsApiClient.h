@@ -26,7 +26,7 @@ SOFTWARE.
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 #include <JsonListener.h>
-#include <JsonStreamingParser.h> // --> https://github.com/squix78/json-streaming-parser
+#include <JsonStreamingParser.h>       // --> https://github.com/squix78/json-streaming-parser
 
 class NewsApiClient: public JsonListener {
 
@@ -45,7 +45,7 @@ class NewsApiClient: public JsonListener {
 
     newsfeed news[10];
     
-    const char* servername = "newsapi.org";  // remote server we will connect to
+    const char* servername = "newsapi.org";  // Remote server we will connect to
   
   public:
     NewsApiClient(String ApiKey, String NewsSource);
@@ -67,5 +67,4 @@ class NewsApiClient: public JsonListener {
     virtual void endDocument();
     virtual void startArray();
     virtual void startObject();
-
 };

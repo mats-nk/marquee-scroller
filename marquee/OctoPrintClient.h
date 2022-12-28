@@ -55,7 +55,7 @@ private:
 
   PrinterStruct printerData;
 
-  
+
 public:
   OctoPrintClient(String ApiKey, String server, int port, String user, String pass);
   void getPrinterJobResults();

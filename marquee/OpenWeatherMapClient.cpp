@@ -47,21 +47,21 @@ void OpenWeatherMapClient::updateWeather() {
   Serial.println(apiGetData);
   weathers[0].cached = false;
   weathers[0].error = "";
-  if (weatherClient.connect(servername, 80)) {  //starts client connection, checks for connection
+  if (weatherClient.connect(servername, 80)) {   // Starts client connection, checks for connection
     weatherClient.println(apiGetData);
     weatherClient.println("Host: " + String(servername));
     weatherClient.println("User-Agent: ArduinoWiFi/1.1");
     weatherClient.println("Connection: close");
     weatherClient.println();
-  } 
+  }
   else {
-    Serial.println("connection for weather data failed"); //error message if no client connect
+    Serial.println("connection for weather data failed");  // Error message if no client connect
     Serial.println();
     weathers[0].error = "Connection for weather data failed";
     return;
   }
 
-  while(weatherClient.connected() && !weatherClient.available()) delay(1); //waits for data
+  while(weatherClient.connected() && !weatherClient.available()) delay(1);  // Waits for data
  
   Serial.println("Waiting for data");
 
@@ -76,7 +76,7 @@ void OpenWeatherMapClient::updateWeather() {
     return;
   }
 
-    // Skip HTTP headers
+  // Skip HTTP headers
   char endOfHeaders[] = "\r\n\r\n";
   if (!weatherClient.find(endOfHeaders)) {
     Serial.println(F("Invalid response"));
@@ -126,6 +126,7 @@ void OpenWeatherMapClient::updateWeather() {
 
     if (units == "metric") {
       // Convert to kph from m/s
+      // Commented out by Mats. According to the SI system should s/m be used in a metric environment
       //float f = (weathers[inx].wind.toFloat() * 3.6);
       //weathers[inx].wind = String(f);
     }
