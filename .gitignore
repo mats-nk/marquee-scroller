@@ -3,4 +3,5 @@ MyConfig.txt
 
 # TODO.md
 
-\marquee\build\*
+# Ignore build subfolders
+**/marquee/build/
