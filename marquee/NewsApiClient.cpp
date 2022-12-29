@@ -23,7 +23,7 @@ SOFTWARE.
 
 #include "NewsApiClient.h"
 
-#define arr_len( x )  ( sizeof( x ) / sizeof( *x ) )
+#define arr_len(x) (sizeof(x) / sizeof(*x))
 
 NewsApiClient::NewsApiClient(String ApiKey, String NewsSource) {
   updateNewsClient(ApiKey, NewsSource);
@@ -54,34 +54,34 @@ void NewsApiClient::updateNews() {
 
   if (httpCode > 0) {  // checks for connection
     Serial.printf("[HTTP] GET... code: %d\n", httpCode);
-    if(httpCode == HTTP_CODE_OK) {
+    if (httpCode == HTTP_CODE_OK) {
       // Get lenght of document (is -1 when Server sends no Content-Length header)
       int len = http.getSize();
       // Create buffer for read
       char buff[128] = { 0 };
       // get tcp stream
-      WiFiClient * stream = http.getStreamPtr();
+      WiFiClient* stream = http.getStreamPtr();
       // Read all data from server
       Serial.println("Start parsing...");
-      while(http.connected() && (len > 0 || len == -1)) {
+      while (http.connected() && (len > 0 || len == -1)) {
         // Get available data size
         size_t size = stream->available();
-        if(size) {
+        if (size) {
           // Read up to 128 byte
           int c = stream->readBytes(buff, ((size > sizeof(buff)) ? sizeof(buff) : size));
-          for(int i=0;i<c;i++) {
-            parser.parse(buff[i]); 
+          for (int i = 0; i < c; i++) {
+            parser.parse(buff[i]);
           }
 
-          if(len > 0)
+          if (len > 0)
             len -= c;
-          }
+        }
         delay(1);
       }
     }
     http.end();
   } else {
-    Serial.println("connection for news data failed: " + String(apiGetData)); //error message if no client connect
+    Serial.println("connection for news data failed: " + String(apiGetData));  //error message if no client connect
     Serial.println();
     return;
   }
@@ -104,7 +104,6 @@ void NewsApiClient::updateNewsSource(String source) {
 }
 
 void NewsApiClient::whitespace(char c) {
-
 }
 
 void NewsApiClient::startDocument() {

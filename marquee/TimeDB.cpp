@@ -23,34 +23,30 @@ SOFTWARE.
 
 #include "TimeDB.h"
 
-TimeDB::TimeDB(String apiKey)
-{
+TimeDB::TimeDB(String apiKey) {
   myApiKey = apiKey;
 }
 
-void TimeDB::updateConfig(String apiKey, String lat, String lon)
-{
+void TimeDB::updateConfig(String apiKey, String lat, String lon) {
   myApiKey = apiKey;
   myLat = lat;
   myLon = lon;
 }
 
-time_t TimeDB::getTime()
-{
+time_t TimeDB::getTime() {
   WiFiClient client;
   String apiGetData = "GET /v2.1/get-time-zone?key=" + myApiKey + "&format=json&by=position&lat=" + myLat + "&lng=" + myLon + " HTTP/1.1";
   Serial.println("Getting Time Data for " + myLat + "," + myLon);
   Serial.println(apiGetData);
   String result = "";
-  if (client.connect(servername, 80)) {                        // Starts client connection, checks for connection
+  if (client.connect(servername, 80)) {  // Starts client connection, checks for connection
     client.println(apiGetData);
     client.println("Host: " + String(servername));
     client.println("User-Agent: ArduinoWiFi/1.1");
     client.println("Connection: close");
     client.println();
-  }
-  else {
-    Serial.println("connection for time data failed");         // Error message if no client connect
+  } else {
+    Serial.println("connection for time data failed");  // Error message if no client connect
     Serial.println();
     return 20;
   }
@@ -60,8 +56,8 @@ time_t TimeDB::getTime()
   Serial.println("Waiting for data");
 
   boolean record = false;
-  while (client.connected() || client.available()) {           // Connected or data available
-    char c = client.read();                                    // Gets byte from ethernet buffer
+  while (client.connected() || client.available()) {  // Connected or data available
+    char c = client.read();                           // Gets byte from ethernet buffer
     if (String(c) == "{") {
       record = true;
     }
@@ -72,12 +68,12 @@ time_t TimeDB::getTime()
       record = false;
     }
   }
-  client.stop(); //stop client
+  client.stop();  //stop client
   Serial.println(result);
 
-  int timeStart = result.lastIndexOf('{');                     // Trim response to start of JSON -- issue 194
+  int timeStart = result.lastIndexOf('{');  // Trim response to start of JSON -- issue 194
   result = result.substring(timeStart);
-  char jsonArray [result.length() + 1];
+  char jsonArray[result.length() + 1];
   result.toCharArray(jsonArray, sizeof(jsonArray));
   jsonArray[result.length() + 1] = '\0';
   DynamicJsonBuffer json_buf;
@@ -87,7 +83,7 @@ time_t TimeDB::getTime()
   if (root["timestamp"] == 0) {
     return 20;
   } else {
-    return (unsigned long) root["timestamp"];
+    return (unsigned long)root["timestamp"];
   }
 }
 

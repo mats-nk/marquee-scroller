@@ -26,45 +26,45 @@ SOFTWARE.
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 #include <JsonListener.h>
-#include <JsonStreamingParser.h>       // --> https://github.com/squix78/json-streaming-parser
+#include <JsonStreamingParser.h>  // --> https://github.com/squix78/json-streaming-parser
 
-class NewsApiClient: public JsonListener {
+class NewsApiClient : public JsonListener {
 
-  private:
-    String mySource = "";
-    String myApiKey = "";
-    
-    String currentKey = "";
-    int counterTitle = 0;
+private:
+  String mySource = "";
+  String myApiKey = "";
 
-    typedef struct {
-      String title;
-      String description;
-      String url;
-    } newsfeed;
+  String currentKey = "";
+  int counterTitle = 0;
 
-    newsfeed news[10];
-    
-    const char* servername = "newsapi.org";  // Remote server we will connect to
-  
-  public:
-    NewsApiClient(String ApiKey, String NewsSource);
-    void updateNewsClient(String ApiKey, String NewsSource);
-    void updateNews();
-    void updateNewsSource(String source);
-    
-    String getTitle(int index);
-    String getDescription(int index);
-    String getUrl(int index);
-    String cleanText(String text);
-    
-    virtual void whitespace(char c);
-    virtual void startDocument();
-    virtual void key(String key);
-    virtual void value(String value);
-    virtual void endArray();
-    virtual void endObject();
-    virtual void endDocument();
-    virtual void startArray();
-    virtual void startObject();
+  typedef struct {
+    String title;
+    String description;
+    String url;
+  } newsfeed;
+
+  newsfeed news[10];
+
+  const char* servername = "newsapi.org";  // Remote server we will connect to
+
+public:
+  NewsApiClient(String ApiKey, String NewsSource);
+  void updateNewsClient(String ApiKey, String NewsSource);
+  void updateNews();
+  void updateNewsSource(String source);
+
+  String getTitle(int index);
+  String getDescription(int index);
+  String getUrl(int index);
+  String cleanText(String text);
+
+  virtual void whitespace(char c);
+  virtual void startDocument();
+  virtual void key(String key);
+  virtual void value(String value);
+  virtual void endArray();
+  virtual void endObject();
+  virtual void endDocument();
+  virtual void startArray();
+  virtual void startObject();
 };

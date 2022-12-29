@@ -59,7 +59,7 @@ private:
   weather weathers[5];
 
   String roundValue(String value);
-  
+
 public:
   OpenWeatherMapClient(String ApiKey, int CityIDs[], int cityCount, boolean isMetric);
   void updateWeather();

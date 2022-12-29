@@ -36,7 +36,7 @@ private:
 
   void resetPrintData();
   boolean validate();
-  
+
   String result;
 
   typedef struct {

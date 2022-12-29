@@ -81,17 +81,16 @@ void OctoPrintClient::getPrinterJobResults() {
       printerData.error = "Octoprint Connection Failed";
       return;
     }
-  }
-  else {
+  } else {
     Serial.println("Connection for OctoPrint data failed: " + String(myServer) + ":" + String(myPort));  // Error message if no client connect
     Serial.println();
     resetPrintData();
-      printerData.error = "Connection for OctoPrint data failed: " + String(myServer) + ":" + String(myPort);
+    printerData.error = "Connection for OctoPrint data failed: " + String(myServer) + ":" + String(myPort);
     return;
   }
 
   // Check HTTP status
-  char status[32] = {0};
+  char status[32] = { 0 };
   printClient.readBytesUntil('\r', status, sizeof(status));
   if (strcmp(status, "HTTP/1.1 200 OK") != 0) {
     Serial.print(F("Unexpected response: "));
@@ -110,7 +109,7 @@ void OctoPrintClient::getPrinterJobResults() {
     return;
   }
 
-  const size_t bufferSize = JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + 2*JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(6) + 710;
+  const size_t bufferSize = JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + 2 * JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(6) + 710;
   DynamicJsonBuffer jsonBuffer(bufferSize);
 
   // Parse JSON object
@@ -119,7 +118,7 @@ void OctoPrintClient::getPrinterJobResults() {
     Serial.println(F("OctoPrint Data Parsing failed!"));
     return;
   }
-  
+
   printerData.averagePrintTime = (const char*)root["job"]["averagePrintTime"];
   printerData.estimatedPrintTime = (const char*)root["job"]["estimatedPrintTime"];
   printerData.fileName = (const char*)root["job"]["file"]["name"];
@@ -138,7 +137,7 @@ void OctoPrintClient::getPrinterJobResults() {
   } else {
     Serial.println("Printer Not Opperational");
   }
-  
+
   printClient.stop();  // Stop client
 }
 
@@ -157,7 +156,7 @@ void OctoPrintClient::resetPrintData() {
   printerData.error = "";
 }
 
-String OctoPrintClient::getAveragePrintTime(){
+String OctoPrintClient::getAveragePrintTime() {
   return printerData.averagePrintTime;
 }
 
@@ -173,7 +172,7 @@ String OctoPrintClient::getFileSize() {
   return printerData.fileSize;
 }
 
-String OctoPrintClient::getLastPrintTime(){
+String OctoPrintClient::getLastPrintTime() {
   return printerData.lastPrintTime;
 }
 
@@ -182,7 +181,7 @@ String OctoPrintClient::getProgressCompletion() {
 }
 
 String OctoPrintClient::getProgressFilepos() {
-  return printerData.progressFilepos;  
+  return printerData.progressFilepos;
 }
 
 String OctoPrintClient::getProgressPrintTime() {

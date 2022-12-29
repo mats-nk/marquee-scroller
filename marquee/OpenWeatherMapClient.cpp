@@ -47,26 +47,25 @@ void OpenWeatherMapClient::updateWeather() {
   Serial.println(apiGetData);
   weathers[0].cached = false;
   weathers[0].error = "";
-  if (weatherClient.connect(servername, 80)) {   // Starts client connection, checks for connection
+  if (weatherClient.connect(servername, 80)) {  // Starts client connection, checks for connection
     weatherClient.println(apiGetData);
     weatherClient.println("Host: " + String(servername));
     weatherClient.println("User-Agent: ArduinoWiFi/1.1");
     weatherClient.println("Connection: close");
     weatherClient.println();
-  }
-  else {
+  } else {
     Serial.println("connection for weather data failed");  // Error message if no client connect
     Serial.println();
     weathers[0].error = "Connection for weather data failed";
     return;
   }
 
-  while(weatherClient.connected() && !weatherClient.available()) delay(1);  // Waits for data
- 
+  while (weatherClient.connected() && !weatherClient.available()) delay(1);  // Waits for data
+
   Serial.println("Waiting for data");
 
   // Check HTTP status
-  char status[32] = {0};
+  char status[32] = { 0 };
   weatherClient.readBytesUntil('\r', status, sizeof(status));
   Serial.println("Response Header: " + String(status));
   if (strcmp(status, "HTTP/1.1 200 OK") != 0) {
@@ -131,12 +130,11 @@ void OpenWeatherMapClient::updateWeather() {
       //weathers[inx].wind = String(f);
     }
 
-    if (units != "metric")
-    {
+    if (units != "metric") {
       float p = (weathers[inx].pressure.toFloat() * 0.0295301);  // Convert millibars to inches
       weathers[inx].pressure = String(p);
     }
-    
+
     Serial.println("lat: " + weathers[inx].lat);
     Serial.println("lon: " + weathers[inx].lon);
     Serial.println("dt: " + weathers[inx].dt);
@@ -157,7 +155,7 @@ void OpenWeatherMapClient::updateWeather() {
 
 String OpenWeatherMapClient::roundValue(String value) {
   float f = value.toFloat();
-  int rounded = (int)(f+0.5f);
+  int rounded = (int)(f + 0.5f);
   return String(rounded);
 }
 
@@ -168,7 +166,7 @@ void OpenWeatherMapClient::updateCityIdList(int CityIDs[], int cityCount) {
       if (myCityIDs != "") {
         myCityIDs = myCityIDs + ",";
       }
-      myCityIDs = myCityIDs + String(CityIDs[inx]); 
+      myCityIDs = myCityIDs + String(CityIDs[inx]);
     }
   }
 }
@@ -225,20 +223,18 @@ String OpenWeatherMapClient::getWind(int index) {
   return weathers[index].wind;
 }
 
-String OpenWeatherMapClient::getDirection(int index)
-{
+String OpenWeatherMapClient::getDirection(int index) {
   return weathers[index].direction;
 }
 
-String OpenWeatherMapClient::getDirectionRounded(int index)
-{
+String OpenWeatherMapClient::getDirectionRounded(int index) {
   return roundValue(getDirection(index));
 }
 
 String OpenWeatherMapClient::getDirectionText(int index) {
   int num = getDirectionRounded(index).toInt();
   int val = floor((num / 22.5) + 0.5);
-  String arr[] = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+  String arr[] = { "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW" };  // Local language /Mats
   return arr[(val % 16)];
 }
 
@@ -254,18 +250,15 @@ String OpenWeatherMapClient::getDescription(int index) {
   return weathers[index].description;
 }
 
-String OpenWeatherMapClient::getPressure(int index)
-{
+String OpenWeatherMapClient::getPressure(int index) {
   return weathers[index].pressure;
 }
 
-String OpenWeatherMapClient::getHigh(int index)
-{
+String OpenWeatherMapClient::getHigh(int index) {
   return roundValue(weathers[index].high);
 }
 
-String OpenWeatherMapClient::getLow(int index)
-{
+String OpenWeatherMapClient::getLow(int index) {
   return roundValue(weathers[index].low);
 }
 
@@ -289,8 +282,8 @@ String OpenWeatherMapClient::getWeekDay(int index, float offset) {
   String rtnValue = "";
   long epoc = weathers[index].dt.toInt();
   long day = 0;
-  if (epoc != 0) { 
-    day = (((epoc + (3600 * (int)offset)) / 86400) + 4) % 7;
+  if (epoc != 0) {
+    day = (((epoc + (3600 * (int)offset)) / 86400) + 4) % 7;   // Local language /Mats
     switch (day) {
       case 0:
         rtnValue = "Sunday";
@@ -331,14 +324,13 @@ int OpenWeatherMapClient::getTimeZone(int index) {
 String OpenWeatherMapClient::getWeatherIcon(int index) {
   int id = getWeatherId(index).toInt();
   String W = ")";
-  switch(id)
-  {
+  switch (id) {
     case 800: W = "B"; break;
     case 801: W = "Y"; break;
     case 802: W = "H"; break;
     case 803: W = "H"; break;
     case 804: W = "Y"; break;
-    
+
     case 200: W = "0"; break;
     case 201: W = "0"; break;
     case 202: W = "0"; break;
@@ -349,7 +341,7 @@ String OpenWeatherMapClient::getWeatherIcon(int index) {
     case 230: W = "0"; break;
     case 231: W = "0"; break;
     case 232: W = "0"; break;
-    
+
     case 300: W = "R"; break;
     case 301: W = "R"; break;
     case 302: W = "R"; break;
@@ -359,7 +351,7 @@ String OpenWeatherMapClient::getWeatherIcon(int index) {
     case 313: W = "R"; break;
     case 314: W = "R"; break;
     case 321: W = "R"; break;
-    
+
     case 500: W = "R"; break;
     case 501: W = "R"; break;
     case 502: W = "R"; break;
@@ -370,7 +362,7 @@ String OpenWeatherMapClient::getWeatherIcon(int index) {
     case 521: W = "R"; break;
     case 522: W = "R"; break;
     case 531: W = "R"; break;
-    
+
     case 600: W = "W"; break;
     case 601: W = "W"; break;
     case 602: W = "W"; break;
@@ -381,7 +373,7 @@ String OpenWeatherMapClient::getWeatherIcon(int index) {
     case 620: W = "W"; break;
     case 621: W = "W"; break;
     case 622: W = "W"; break;
-    
+
     case 701: W = "M"; break;
     case 711: W = "M"; break;
     case 721: W = "M"; break;
@@ -392,8 +384,8 @@ String OpenWeatherMapClient::getWeatherIcon(int index) {
     case 762: W = "M"; break;
     case 771: W = "M"; break;
     case 781: W = "M"; break;
-    
-    default:break; 
+
+    default: break;
   }
   return W;
 }

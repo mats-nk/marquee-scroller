@@ -23,24 +23,23 @@ SOFTWARE.
 
 #pragma once
 #include <ESP8266WiFi.h>
-#include <TimeLib.h> // https://github.com/PaulStoffregen/Time 
+#include <TimeLib.h>  // https://github.com/PaulStoffregen/Time
 #include "libs/ArduinoJson/ArduinoJson.h"
 
-class TimeDB
-{
-  public:
-    TimeDB(String apiKey);
-    void updateConfig(String apiKey, String lat, String lon);
-    time_t getTime();
-    String getDayName();
-    String getMonthName();
-    String getAmPm();
-    String zeroPad(int number);
+class TimeDB {
+public:
+  TimeDB(String apiKey);
+  void updateConfig(String apiKey, String lat, String lon);
+  time_t getTime();
+  String getDayName();
+  String getMonthName();
+  String getAmPm();
+  String zeroPad(int number);
 
-  private:
-    const char* servername = "api.timezonedb.com";  // Remote server we will connect to
-    long localMillisAtUpdate;
-    String myApiKey;
-    String myLat;
-    String myLon;
+private:
+  const char* servername = "api.timezonedb.com";  // Remote server we will connect to
+  long localMillisAtUpdate;
+  String myApiKey;
+  String myLat;
+  String myLon;
 };

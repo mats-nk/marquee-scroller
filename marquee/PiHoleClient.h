@@ -37,7 +37,7 @@ private:
 
   String errorMessage = "";
 
-  int blocked[144] = {0};  
+  int blocked[144] = { 0 };
   int blockedCount = 0;
   int blockedHigh = 0;
 
@@ -96,7 +96,7 @@ public:
   String getPiHoleStatus();
   String getError();
 
-  int *getBlockedAds();  
+  int *getBlockedAds();
   int getBlockedCount();
   int getBlockedHigh();
 

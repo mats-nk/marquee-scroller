@@ -35,77 +35,77 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266HTTPUpdateServer.h>
-#include <WiFiManager.h>                       // https://github.com/tzapu/WiFiManager
+#include <WiFiManager.h>  // https://github.com/tzapu/WiFiManager
 #include <ESP8266mDNS.h>
 #include <ArduinoOTA.h>
 #include "FS.h"
 #include <SPI.h>
-#include <Adafruit_GFX.h>                      // https://github.com/adafruit/Adafruit-GFX-Library
-#include <Max72xxPanel.h>                      // https://github.com/markruys/arduino-Max72xxPanel
+#include <Adafruit_GFX.h>  // https://github.com/adafruit/Adafruit-GFX-Library
+#include <Max72xxPanel.h>  // https://github.com/markruys/arduino-Max72xxPanel
 #include <pgmspace.h>
 #include "OpenWeatherMapClient.h"
-#include "TimeDB.h"                            // https://github.com/PaulStoffregen/Time
-#include "NewsApiClient.h" 
+#include "TimeDB.h"  // https://github.com/PaulStoffregen/Time
+#include "NewsApiClient.h"
 #include "OctoPrintClient.h"
 #include "PiHoleClient.h"
-                                               // https://github.com/squix78/json-streaming-parser
+// https://github.com/squix78/json-streaming-parser
 
 
 //******************************
 // Start Settings
 //******************************
 
-String TIMEDBKEY                = "";          // Your API Key from https://timezonedb.com/register
-String APIKEY                   = "";          // Your API Key from http://openweathermap.org/
-int CityIDs[]                   = { 00000 };   // Default City Location (use http://openweathermap.org/find
-String marqueeMessage           = "";
-boolean IS_METRIC               = true;        // false = Imperial or true = Metric
-boolean IS_24HOUR               = true;        // 24 hour clock
-boolean IS_PM                   = false;       // Show PM indicator on Clock when in AM/PM mode
-const int WEBSERVER_PORT        = 80;          // The port you can access this device on over HTTP
-const boolean WEBSERVER_ENABLED = true;        // Device will provide a web interface via http://[ip]:[port]/
-boolean IS_BASIC_AUTH           = false;       // Use Basic Authorization for Configuration security on Web Interface
-char* www_username              = "";          // User account for the Web Interface
-char* www_password              = "";          // Password for the Web Interface
-int minutesBetweenDataRefresh   = 15;          // Time in minutes between data refresh (default 15 minutes)
-int minutesBetweenScrolling     = 1;           // Time in minutes between scrolling data (default 1 minutes and max is 10)
-int displayScrollSpeed          = 25;          // In milliseconds -- Configurable by the web UI (slow = 35, normal = 25, fast = 15, very fast = 5)
-boolean flashOnSeconds          = true;        // When true the : character in the time will flash on and off as a seconds indicator
+String TIMEDBKEY = "";                   // Your API Key from https://timezonedb.com/register
+String APIKEY = "";                      // Your API Key from http://openweathermap.org/
+int CityIDs[] = { 00000 };               // Default City Location (use http://openweathermap.org/find
+String marqueeMessage = "";
+boolean IS_METRIC = true;                // false = Imperial or true = Metric
+boolean IS_24HOUR = true;                // 24 hour clock
+boolean IS_PM = false;                   // Show PM indicator on Clock when in AM/PM mode
+const int WEBSERVER_PORT = 80;           // The port you can access this device on over HTTP
+const boolean WEBSERVER_ENABLED = true;  // Device will provide a web interface via http://[ip]:[port]/
+boolean IS_BASIC_AUTH = false;           // Use Basic Authorization for Configuration security on Web Interface
+char* www_username = "";                 // User account for the Web Interface
+char* www_password = "";                 // Password for the Web Interface
+int minutesBetweenDataRefresh = 15;      // Time in minutes between data refresh (default 15 minutes)
+int minutesBetweenScrolling = 1;         // Time in minutes between scrolling data (default 1 minutes and max is 10)
+int displayScrollSpeed = 25;             // In milliseconds -- Configurable by the web UI (slow = 35, normal = 25, fast = 15, very fast = 5)
+boolean flashOnSeconds = true;           // When true the : character in the time will flash on and off as a seconds indicator
 
-boolean NEWS_ENABLED            = false;
-String NEWS_API_KEY             = "";          // Get your News API Key from https://newsapi.org
-String NEWS_SOURCE              = "reuters";   // https://newsapi.org/sources to get full list of news sources available
+boolean NEWS_ENABLED = false;
+String NEWS_API_KEY = "";        // Get your News API Key from https://newsapi.org
+String NEWS_SOURCE = "reuters";  // https://newsapi.org/sources to get full list of news sources available
 
 // Display wiring  |  CLK -> D5 (SCK)
 //                 |  CS  -> D6 (Configurable via pinCS)
 //                 |  DIN -> D7 (MOSI)
-const int pinCS                      = D6;     // Attach CS to this pin, DIN to MOSI and CLK to SCK (cf http://arduino.cc/en/Reference/SPI )
-int displayIntensity                 = 1;      // (This can be set from 0 - 15)
-const int numberOfHorizontalDisplays = 12;     // Default 4 for standard 4 x 1 display Max size of 16
-const int numberOfVerticalDisplays   = 1;      // Default 1 for a single row height
-int ledRotation                      = 3;      // Set ledRotation for LED Display panels (3 is default)
-                                               // 0: No rotation           |   2: 180 degrees
-                                               // 1: 90 degrees clockwise  |   3: 90 degrees counter clockwise (default)
+const int pinCS = D6;                       // Attach CS to this pin, DIN to MOSI and CLK to SCK (cf http://arduino.cc/en/Reference/SPI )
+int displayIntensity = 1;                   // (This can be set from 0 - 15)
+const int numberOfHorizontalDisplays = 12;  // Default 4 for standard 4 x 1 display Max size of 16
+const int numberOfVerticalDisplays = 1;     // Default 1 for a single row height
+int ledRotation = 3;                        // Set ledRotation for LED Display panels (3 is default)
+                                            // 0: No rotation           |   2: 180 degrees
+                                            // 1: 90 degrees clockwise  |   3: 90 degrees counter clockwise (default)
 
-String timeDisplayTurnsOn       = "06:30";     // 24 Hour Format HH:MM -- Leave blank for always on. (ie 05:30)
-String timeDisplayTurnsOff      = "22:00";     // 24 Hour Format HH:MM -- Leave blank for always on. Both must be set to work.
+String timeDisplayTurnsOn = "06:30";   // 24 Hour Format HH:MM -- Leave blank for always on. (ie 05:30)
+String timeDisplayTurnsOff = "22:00";  // 24 Hour Format HH:MM -- Leave blank for always on. Both must be set to work.
 
 // OctoPrint Monitoring -- Monitor your 3D printer OctoPrint Server
-boolean OCTOPRINT_ENABLED       = false;
-boolean OCTOPRINT_PROGRESS      = true;
-String OctoPrintApiKey          = "";          // ApiKey from your User Account on OctoPrint
-String OctoPrintServer          = "";          // IP or Address of your OctoPrint Server (DO NOT include http://)
-int OctoPrintPort               = 80;          // The port you are running your OctoPrint server on (usually 80);
-String OctoAuthUser             = "";          // Only used if you have haproxy or basic athentintication turned on (not default)
-String OctoAuthPass             = "";          // Only used with haproxy or basic auth (only needed if you must authenticate)
+boolean OCTOPRINT_ENABLED = false;
+boolean OCTOPRINT_PROGRESS = true;
+String OctoPrintApiKey = "";  // ApiKey from your User Account on OctoPrint
+String OctoPrintServer = "";  // IP or Address of your OctoPrint Server (DO NOT include http://)
+int OctoPrintPort = 80;       // The port you are running your OctoPrint server on (usually 80);
+String OctoAuthUser = "";     // Only used if you have haproxy or basic athentintication turned on (not default)
+String OctoAuthPass = "";     // Only used with haproxy or basic auth (only needed if you must authenticate)
 
 // Pi-hole Client -- monitor basic stats from your Pi-hole server (see http://pi-hole.net)
-boolean USE_PIHOLE              = false;       // Set true to display your Pi-hole details
-String PiHoleServer             = "";          // IP or Address only (DO NOT include http://)
-int PiHolePort                  = 80;          // Port of your Pi-hole address (default 80)
+boolean USE_PIHOLE = false;  // Set true to display your Pi-hole details
+String PiHoleServer = "";    // IP or Address only (DO NOT include http://)
+int PiHolePort = 80;         // Port of your Pi-hole address (default 80)
 
-boolean ENABLE_OTA              = true;        // This will allow you to load firmware to the device over WiFi (see OTA for ESP8266)
-String OTA_Password             = "";          // Set an OTA password here -- leave blank if you don't want to be prompted for password
+boolean ENABLE_OTA = true;  // This will allow you to load firmware to the device over WiFi (see OTA for ESP8266)
+String OTA_Password = "";   // Set an OTA password here -- leave blank if you don't want to be prompted for password
 
 //******************************
 // End Settings
