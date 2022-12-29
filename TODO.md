@@ -37,17 +37,19 @@ TimeDB.cpp
 Row 126 Month names
 
 
+Other tasks from "feature requests"
+-----------------------------------
 
-
+### No 1
 
 I only want to see the current time and temperature and therefore want do disable scrolling. (If all additional modules are disabled, weather is scrolling even it is displayed on the main page)
+
 I disabled scrolling by commenting out line 413 in marquee.ino [ //scrollMessage(msg); ]
 
 Maybe you could wrap this with an if and make it configurable in the Web UI. eg. "Minutes between scrolling Data"  = 0?
 
 
-
-
+### No 2
 
 To get the weather in different language sis quite simple; just add lang=
 

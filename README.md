@@ -1,5 +1,9 @@
 # Marquee Scroller (Clock, Weather, News, and More)
 
+## Discord channel
+
+https://discord.gg/ACKq4MGEGv
+
 ## NOTICE
 The latest version of Marquee Scroller 3.01 works with **ESP8266 Core 3.0.2**
 
