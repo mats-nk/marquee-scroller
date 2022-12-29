@@ -26,7 +26,7 @@ Convert to kph from m/s
 
 Row 128, Commented out "Convert to kph from m/s"
 
-Row 241, String arr[] = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+Row 241, `String arr[] = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};`
 Wind directions
 
 Row 290ish has weekday names
@@ -55,4 +55,4 @@ To get the weather in different language sis quite simple; just add lang=
 
 See: https://openweathermap.org/current#multi
 
-Example: https://api.openweathermap.org/data/2.5/weather?id="city id"&appid="API key"&lang=de
+Example: `https://api.openweathermap.org/data/2.5/weather?id="city id"&appid="API key"&lang=de`
