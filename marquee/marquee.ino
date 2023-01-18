@@ -27,7 +27,7 @@
 
 #include "Settings.h"
 
-#define VERSION "3.02"
+#define VERSION "4.00"
 
 #define HOSTNAME "CLOCK-"
 #define CONFIG "/conf.txt"
@@ -380,8 +380,8 @@ void loop() {
     if (displayRefreshCount <= 0) {
       displayRefreshCount = minutesBetweenScrolling;
       String temperature = weatherClient.getTempRounded(0);
-      String description = weatherClient.getDescription(0);
-      description.toUpperCase();
+      String description = weatherClient.getCondition(0) + " (" + weatherClient.getDescription(0) + ")";
+      //description.toUpperCase();
       String msg;
       msg += " ";
 

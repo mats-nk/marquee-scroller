@@ -41,8 +41,9 @@ void OpenWeatherMapClient::updateWeather() {
     Serial.println(weathers[0].error);
     return;
   }
-  String apiGetData = "GET /data/2.5/group?id=" + myCityIDs + "&units=" + units + "&cnt=1&APPID=" + myApiKey + " HTTP/1.1";
-
+  //String apiGetData = "GET /data/2.5/group?id=" + myCityIDs + "&units=" + units + "&cnt=1&APPID=" + myApiKey + " HTTP/1.1";
+  String apiGetData = "GET /data/2.5/weather?id=" + myCityIDs + "&units=" + units + "&APPID=" + myApiKey + " HTTP/1.1";
+  
   Serial.println("Getting Weather Data");
   Serial.println(apiGetData);
   weathers[0].cached = false;
@@ -103,26 +104,47 @@ void OpenWeatherMapClient::updateWeather() {
     Serial.println("Error: " + weathers[0].error);
     return;
   }
-  int count = root["cnt"];
+  //int count = root["cnt"];
 
-  for (int inx = 0; inx < count; inx++) {
-    weathers[inx].lat = (const char*)root["list"][inx]["coord"]["lat"];
-    weathers[inx].lon = (const char*)root["list"][inx]["coord"]["lon"];
-    weathers[inx].dt = (const char*)root["list"][inx]["dt"];
-    weathers[inx].city = (const char*)root["list"][inx]["name"];
-    weathers[inx].country = (const char*)root["list"][inx]["sys"]["country"];
-    weathers[inx].temp = (const char*)root["list"][inx]["main"]["temp"];
-    weathers[inx].humidity = (const char*)root["list"][inx]["main"]["humidity"];
-    weathers[inx].condition = (const char*)root["list"][inx]["weather"][0]["main"];
-    weathers[inx].wind = (const char*)root["list"][inx]["wind"]["speed"];
-    weathers[inx].weatherId = (const char*)root["list"][inx]["weather"][0]["id"];
-    weathers[inx].description = (const char*)root["list"][inx]["weather"][0]["description"];
-    weathers[inx].icon = (const char*)root["list"][inx]["weather"][0]["icon"];
-    weathers[inx].pressure = (const char*)root["list"][inx]["main"]["pressure"];
-    weathers[inx].direction = (const char*)root["list"][inx]["wind"]["deg"];
-    weathers[inx].high = (const char*)root["list"][inx]["main"]["temp_max"];
-    weathers[inx].low = (const char*)root["list"][inx]["main"]["temp_min"];
-    weathers[inx].timeZone = (const char*)root["list"][inx]["sys"]["timezone"];
+  //for (int inx = 0; inx < count; inx++) {
+    // weathers[inx].lat = (const char*)root["list"][inx]["coord"]["lat"];
+    // weathers[inx].lon = (const char*)root["list"][inx]["coord"]["lon"];
+    // weathers[inx].dt = (const char*)root["list"][inx]["dt"];
+    // weathers[inx].city = (const char*)root["list"][inx]["name"];
+    // weathers[inx].country = (const char*)root["list"][inx]["sys"]["country"];
+    // weathers[inx].temp = (const char*)root["list"][inx]["main"]["temp"];
+    // weathers[inx].humidity = (const char*)root["list"][inx]["main"]["humidity"];
+    // weathers[inx].condition = (const char*)root["list"][inx]["weather"][0]["main"];
+    // weathers[inx].wind = (const char*)root["list"][inx]["wind"]["speed"];
+    // weathers[inx].weatherId = (const char*)root["list"][inx]["weather"][0]["id"];
+    // weathers[inx].description = (const char*)root["list"][inx]["weather"][0]["description"];
+    // weathers[inx].icon = (const char*)root["list"][inx]["weather"][0]["icon"];
+    // weathers[inx].pressure = (const char*)root["list"][inx]["main"]["pressure"];
+    // weathers[inx].direction = (const char*)root["list"][inx]["wind"]["deg"];
+    // weathers[inx].high = (const char*)root["list"][inx]["main"]["temp_max"];
+    // weathers[inx].low = (const char*)root["list"][inx]["main"]["temp_min"];
+    // weathers[inx].timeZone = (const char*)root["list"][inx]["sys"]["timezone"];
+    
+    int inx = 0;
+
+    weathers[inx].lat = (const char*)root["coord"]["lat"];
+    weathers[inx].lon = (const char*)root["coord"]["lon"];
+    weathers[inx].dt = (const char*)root["dt"];
+    weathers[inx].city = (const char*)root["name"];
+    weathers[inx].country = (const char*)root["sys"]["country"];
+    weathers[inx].temp = (const char*)root["main"]["temp"];
+    weathers[inx].humidity = (const char*)root["main"]["humidity"];
+    weathers[inx].condition = (const char*)root["weather"][0]["main"];
+    weathers[inx].wind = (const char*)root["wind"]["speed"];
+    weathers[inx].weatherId = (const char*)root["weather"][0]["id"];
+    weathers[inx].description = (const char*)root["weather"][0]["description"];
+    weathers[inx].icon = (const char*)root["weather"][0]["icon"];
+    weathers[inx].pressure = (const char*)root["main"]["pressure"];
+    weathers[inx].direction = (const char*)root["wind"]["deg"];
+    weathers[inx].high = (const char*)root["main"]["temp_max"];
+    weathers[inx].low = (const char*)root["main"]["temp_min"];
+    weathers[inx].timeZone = (const char*)root["sys"]["timezone"];
+
 
     if (units == "metric") {
       // convert to kph from m/s
@@ -152,7 +174,7 @@ void OpenWeatherMapClient::updateWeather() {
     Serial.println("timezone: " + String(getTimeZone(inx)));
     Serial.println();
     
-  }
+  //}
 }
 
 String OpenWeatherMapClient::roundValue(String value) {
