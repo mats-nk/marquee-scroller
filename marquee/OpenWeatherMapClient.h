@@ -24,6 +24,7 @@ SOFTWARE.
 #pragma once
 #include <ESP8266WiFi.h>
 #include "libs/ArduinoJson/ArduinoJson.h"
+#include <TimeLib.h>
 
 class OpenWeatherMapClient {
 
@@ -54,11 +55,16 @@ private:
     String high;
     String low;
     String timeZone;
+    String feelslike;
+    String sunrise;
+    String sunset;
+    String cloudcover;
   } weather;
 
   weather weathers[5];
 
   String roundValue(String value);
+  String zeroPad(int number);
   
 public:
   OpenWeatherMapClient(String ApiKey, int CityIDs[], int cityCount, boolean isMetric);
@@ -94,4 +100,8 @@ public:
   String getError();
   String getWeekDay(int index, float offset);
   int getTimeZone(int index);
+  String getFeelslike (int index);
+  String getCloudcover (int index);
+  String getSunrise (int index);
+  String getSunset (int index);
 };

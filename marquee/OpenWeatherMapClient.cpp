@@ -43,7 +43,7 @@ void OpenWeatherMapClient::updateWeather() {
   }
   //String apiGetData = "GET /data/2.5/group?id=" + myCityIDs + "&units=" + units + "&cnt=1&APPID=" + myApiKey + " HTTP/1.1";
   String apiGetData = "GET /data/2.5/weather?id=" + myCityIDs + "&units=" + units + "&APPID=" + myApiKey + " HTTP/1.1";
-  
+
   Serial.println("Getting Weather Data");
   Serial.println(apiGetData);
   weathers[0].cached = false;
@@ -143,7 +143,12 @@ void OpenWeatherMapClient::updateWeather() {
     weathers[inx].direction = (const char*)root["wind"]["deg"];
     weathers[inx].high = (const char*)root["main"]["temp_max"];
     weathers[inx].low = (const char*)root["main"]["temp_min"];
-    weathers[inx].timeZone = (const char*)root["sys"]["timezone"];
+    weathers[inx].feelslike = (const char*)root["main"]["feels_like"];
+    weathers[inx].timeZone = (const char*)root["timezone"];
+    weathers[inx].sunrise = (const char*)root["sys"]["sunrise"];
+    weathers[inx].sunset = (const char*)root["sys"]["sunset"];
+    weathers[inx].cloudcover = (const char*)root["clouds"]["all"];
+
 
 
     if (units == "metric") {
@@ -291,6 +296,16 @@ String OpenWeatherMapClient::getLow(int index)
   return roundValue(weathers[index].low);
 }
 
+String OpenWeatherMapClient::getFeelslike(int index)
+{
+  return roundValue(weathers[index].feelslike);
+}
+
+String OpenWeatherMapClient::getCloudcover(int index)
+{
+  return roundValue(weathers[index].cloudcover);
+}
+
 String OpenWeatherMapClient::getIcon(int index) {
   return weathers[index].icon;
 }
@@ -341,13 +356,44 @@ String OpenWeatherMapClient::getWeekDay(int index, float offset) {
   }
   return rtnValue;
 }
+String OpenWeatherMapClient::getSunrise(int index) {
+  String rtnValue = "";
+  struct tm * timeinfo;
+  char buffer [10];
+  
+  long epoc = weathers[index].sunrise.toInt();
+  time_t epoch_time_as_time_t = epoc;
+  
+  rtnValue = zeroPad(hour(epoch_time_as_time_t)) + ":" + zeroPad(minute(epoch_time_as_time_t));
 
+  return rtnValue;
+}
+String OpenWeatherMapClient::getSunset(int index) {
+  String rtnValue = "";
+  struct tm * timeinfo;
+
+  
+  long epoc = weathers[index].sunset.toInt();
+  time_t epoch_time_as_time_t = epoc;
+  
+  rtnValue = zeroPad(hour(epoch_time_as_time_t)) + ":" + zeroPad(minute(epoch_time_as_time_t));
+
+  return rtnValue;
+}
 int OpenWeatherMapClient::getTimeZone(int index) {
   int rtnValue = weathers[index].timeZone.toInt();
   if (rtnValue != 0) {
     rtnValue = rtnValue / 3600;
   }
   return rtnValue;
+}
+
+String OpenWeatherMapClient::zeroPad(int number) {
+  if (number < 10) {
+    return "0" + String(number);
+  } else {
+    return String(number);
+  }
 }
 
 String OpenWeatherMapClient::getWeatherIcon(int index) {

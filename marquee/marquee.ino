@@ -343,7 +343,7 @@ void setup() {
 }
 
 //************************************************************
-// Main Looop
+// Main Loop
 //************************************************************
 void loop() {
   //Get some Weather Data to serve
@@ -380,7 +380,7 @@ void loop() {
     if (displayRefreshCount <= 0) {
       displayRefreshCount = minutesBetweenScrolling;
       String temperature = weatherClient.getTempRounded(0);
-      String description = weatherClient.getCondition(0) + " (" + weatherClient.getDescription(0) + ")";
+      String description = weatherClient.getCondition(0) + " (" + weatherClient.getDescription(0) + ") Cloud Cover:" + weatherClient.getCloudcover(0) + "%"; //cloud cover is new feature
       //description.toUpperCase();
       String msg;
       msg += " ";
@@ -392,11 +392,13 @@ void loop() {
       if (SHOW_CITY) {
         msg += weatherClient.getCity(0) + "  ";
       }
-      msg += temperature + getTempSymbol() + "  ";
+
+      //show current and feels like temperatures
+      msg += "Weather for next hour - Temperature:" + temperature + getTempSymbol() + ", feels like " + weatherClient.getFeelslike(0) + getTempSymbol() + "  "; //feels like temp is new feature
 
       //show high/low temperature
       if (SHOW_HIGHLOW) {
-        msg += "High/Low:" + weatherClient.getHigh(0) + "/" + weatherClient.getLow(0) + " " + getTempSymbol() + "  ";
+        msg += "High:" + weatherClient.getHigh(0) + getTempSymbol() +"/Low:" + weatherClient.getLow(0) + getTempSymbol() + "  ";
       }
       
       if (SHOW_CONDITION) {
@@ -406,12 +408,15 @@ void loop() {
         msg += "Humidity:" + weatherClient.getHumidityRounded(0) + "%  ";
       }
       if (SHOW_WIND) {
-        msg += "Wind: " + weatherClient.getDirectionText(0) + " @ " + weatherClient.getWindRounded(0) + " " + getSpeedSymbol() + "  ";
+        msg += "Wind:" + weatherClient.getDirectionText(0) + " @ " + weatherClient.getWindRounded(0) + getSpeedSymbol() + "  ";
       }
       //line to show barometric pressure
       if (SHOW_PRESSURE) {
         msg += "Pressure:" + weatherClient.getPressure(0) + getPressureSymbol() + "  ";
       }
+
+      //Show sunrise and sunset times -- new feature
+      msg += "Sunrise:" + weatherClient.getSunrise(0) + "/Sunset:" + weatherClient.getSunset(0) + "  ";
      
       msg += marqueeMessage + " ";
       
