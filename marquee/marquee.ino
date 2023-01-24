@@ -394,7 +394,7 @@ void loop() {
       }
 
       //show current and feels like temperatures
-      msg += "Weather for next hour - Temperature:" + temperature + getTempSymbol() + ", feels like " + weatherClient.getFeelslike(0) + getTempSymbol() + "  "; //feels like temp is new feature
+      msg += "Weather for the next hour - Temperature:" + temperature + getTempSymbol() + ", feels like " + weatherClient.getFeelslike(0) + getTempSymbol() + "  "; //feels like temp is new feature
 
       //show high/low temperature
       if (SHOW_HIGHLOW) {
@@ -481,7 +481,7 @@ String zeroPad(int value) {
 
 String hourMinutes(boolean isRefresh) {
   if (IS_24HOUR) {
-    return String(hour()) + secondsIndicator(isRefresh) + TimeDB.zeroPad(minute());
+    return String(TimeDB.spacePad(hour())) + secondsIndicator(isRefresh) + TimeDB.zeroPad(minute());
   } else {
     return String(hourFormat12()) + secondsIndicator(isRefresh) + TimeDB.zeroPad(minute());
   }
