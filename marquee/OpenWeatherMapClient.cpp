@@ -358,25 +358,39 @@ String OpenWeatherMapClient::getWeekDay(int index, float offset) {
 }
 String OpenWeatherMapClient::getSunrise(int index) {
   String rtnValue = "";
-  struct tm * timeinfo;
-  char buffer [10];
   
   long epoc = weathers[index].sunrise.toInt();
   time_t epoch_time_as_time_t = epoc;
+  struct tm *time_local = localtime(&epoch_time_as_time_t);
+
+
+  int dstValue = weathers[index].timeZone.toInt();
+  if (dstValue != 0) {
+    dstValue = dstValue / 3600;
+  }
   
-  rtnValue = zeroPad(hour(epoch_time_as_time_t)) + ":" + zeroPad(minute(epoch_time_as_time_t));
+  time_local -> tm_hour += dstValue;
+  
+  rtnValue = zeroPad(hour(mktime(time_local))) + ":" + zeroPad(minute(mktime(time_local)));
 
   return rtnValue;
 }
 String OpenWeatherMapClient::getSunset(int index) {
   String rtnValue = "";
-  struct tm * timeinfo;
 
-  
   long epoc = weathers[index].sunset.toInt();
   time_t epoch_time_as_time_t = epoc;
+  struct tm *time_local = localtime(&epoch_time_as_time_t);
+
+
+  int dstValue = weathers[index].timeZone.toInt();
+  if (dstValue != 0) {
+    dstValue = dstValue / 3600;
+  }
   
-  rtnValue = zeroPad(hour(epoch_time_as_time_t)) + ":" + zeroPad(minute(epoch_time_as_time_t));
+  time_local -> tm_hour += dstValue;
+  
+  rtnValue = zeroPad(hour(mktime(time_local))) + ":" + zeroPad(minute(mktime(time_local)));
 
   return rtnValue;
 }

@@ -854,7 +854,7 @@ void handleConfigure() {
   form.replace("%ENDTIME%", timeDisplayTurnsOff);
   form.replace("%INTENSITYOPTIONS%", String(displayIntensity));
   String dSpeed = String(displayScrollSpeed);
-  String scrollOptions = "<option value='35'>Slow</option><option value='25'>Normal</option><option value='15'>Fast</option><option value='10'>Very Fast</option>";
+  String scrollOptions = "<option value='100'>Ultra Slow</option><option value='50'>Super Slow</option><option value='35'>Slow</option><option value='25'>Normal</option><option value='15'>Fast</option><option value='10'>Very Fast</option>";
   scrollOptions.replace(dSpeed + "'", dSpeed + "' selected" );
   form.replace("%SCROLLOPTIONS%", scrollOptions);
   String minutes = String(minutesBetweenDataRefresh);
