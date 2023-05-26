@@ -33,18 +33,18 @@
 #define CONFIG "/conf.txt"
 #define BUZZER_PIN  D2
 
-/* Useful Constants */
+// Useful Constants
 #define SECS_PER_MIN  (60UL)
 #define SECS_PER_HOUR (3600UL)
 #define SECS_PER_DAY  (SECS_PER_HOUR * 24L)
 
-/* Useful Macros for getting elapsed time */
+// Useful Macros for getting elapsed time
 #define numberOfSeconds(_time_) (_time_ % SECS_PER_MIN)
 #define numberOfMinutes(_time_) ((_time_ / SECS_PER_MIN) % SECS_PER_MIN)
 #define numberOfHours(_time_) (( _time_% SECS_PER_DAY) / SECS_PER_HOUR)
 #define elapsedDays(_time_) ( _time_ / SECS_PER_DAY)
 
-//declairing prototypes
+// Declairing prototypes
 void configModeCallback (WiFiManager *myWiFiManager);
 int8_t getWifiQuality();
 
@@ -52,11 +52,11 @@ int8_t getWifiQuality();
 const int offset = 1;
 int refresh = 0;
 String message = "hello";
-int spacer = 1;  // dots between letters
+int spacer = 1;  // Dots between letters
 int width = 5 + spacer; // The font width is 5 pixels + spacer
 Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
-String Wide_Clock_Style = "1";  //1="hh:mm Temp", 2="hh:mm:ss", 3="hh:mm"
-float UtcOffset;  //time zone offsets that correspond with the CityID above (offset from GMT)
+String Wide_Clock_Style = "1";  // 1="hh:mm Temp", 2="hh:mm:ss", 3="hh:mm"
+float UtcOffset;  // Time zone offsets that correspond with the CityID above (offset from GMT)
 
 // Time
 TimeDB TimeDB("");
@@ -220,7 +220,7 @@ void setup() {
   // Initialize digital pin for LED
   pinMode(externalLight, OUTPUT);
 
-  //New Line to clear from start garbage
+  // New Line to clear from start garbage
   Serial.println();
 
   readCityIds();
@@ -236,7 +236,7 @@ void setup() {
   }
 
   Serial.println("matrix created");
-  matrix.fillScreen(LOW); // show black
+  matrix.fillScreen(LOW); // Show black
   centerPrint("hello");
 
   tone(BUZZER_PIN, 415, 500);
@@ -259,27 +259,27 @@ void setup() {
   matrix.setIntensity(displayIntensity);
   //noTone(BUZZER_PIN);
 
-  //WiFiManager
-  //Local intialization. Once its business is done, there is no need to keep it around
+  // WiFiManager
+  // Local intialization. Once its business is done, there is no need to keep it around
   WiFiManager wifiManager;
 
   // Uncomment for testing wifi manager
   //wifiManager.resetSettings();
   wifiManager.setAPCallback(configModeCallback);
 
-  //Custom Station (client) Static IP Configuration - Set custom IP for your Network (IP, Gateway, Subnet mask)
+  // Custom Station (client) Static IP Configuration - Set custom IP for your Network (IP, Gateway, Subnet mask)
   //wifiManager.setSTAStaticIPConfig(IPAddress(192,168,0,99), IPAddress(192,168,0,1), IPAddress(255,255,255,0));
 
   String hostname(HOSTNAME);
   hostname += String(ESP.getChipId(), HEX);
-  if (!wifiManager.autoConnect((const char *)hostname.c_str())) {// new addition
+  if (!wifiManager.autoConnect((const char *)hostname.c_str())) {  // New addition
     delay(3000);
     WiFi.disconnect(true);
     ESP.reset();
     delay(5000);
   }
 
-  // print the received signal strength:
+  // Print the received signal strength:
   Serial.print("Signal Strength (RSSI): ");
   Serial.print(getWifiQuality());
   Serial.println("%");
@@ -346,11 +346,11 @@ void setup() {
 // Main Loop
 //************************************************************
 void loop() {
-  //Get some Weather Data to serve
+  // Get some Weather Data to serve
   if ((getMinutesFromLastRefresh() >= minutesBetweenDataRefresh) || lastEpoch == 0) {
     getWeatherData();
   }
-  checkDisplay(); // this will see if we need to turn it on or off for night mode.
+  checkDisplay(); // This will see if we need to turn it on or off for night mode.
 
   if (lastMinute != TimeDB.zeroPad(minute())) {
     lastMinute = TimeDB.zeroPad(minute());
@@ -363,7 +363,7 @@ void loop() {
     if (displayOn) {
       matrix.shutdown(false);
     }
-    matrix.fillScreen(LOW); // show black
+    matrix.fillScreen(LOW); // Show black
     if (OCTOPRINT_ENABLED) {
       if (displayOn && ((printerClient.isOperational() || printerClient.isPrinting()) || printerCount == 0)) {
         // This should only get called if the printer is actually running or if it has been 2 minutes since last check
@@ -380,7 +380,7 @@ void loop() {
     if (displayRefreshCount <= 0) {
       displayRefreshCount = minutesBetweenScrolling;
       String temperature = weatherClient.getTempRounded(0);
-      String description = weatherClient.getCondition(0) + " (" + weatherClient.getDescription(0) + ") Cloud Cover:" + weatherClient.getCloudcover(0) + "%"; //cloud cover is new feature
+      String description = weatherClient.getCondition(0) + " (" + weatherClient.getDescription(0) + ") Cloud Cover:" + weatherClient.getCloudcover(0) + "%"; // Cloud cover is new feature
       //description.toUpperCase();
       String msg;
       msg += " ";
@@ -393,10 +393,10 @@ void loop() {
         msg += weatherClient.getCity(0) + "  ";
       }
 
-      //show current and feels like temperatures
-      msg += "Weather for the next hour - Temperature:" + temperature + getTempSymbol() + ", feels like " + weatherClient.getFeelslike(0) + getTempSymbol() + "  "; //feels like temp is new feature
+      // Show current and feels like temperatures
+      msg += "Weather for the next hour - Temperature:" + temperature + getTempSymbol() + ", feels like " + weatherClient.getFeelslike(0) + getTempSymbol() + "  "; // Feels like temp is new feature
 
-      //show high/low temperature
+      // Show high/low temperature
       if (SHOW_HIGHLOW) {
         msg += "High:" + weatherClient.getHigh(0) + getTempSymbol() +"/Low:" + weatherClient.getLow(0) + getTempSymbol() + "  ";
       }
@@ -410,12 +410,12 @@ void loop() {
       if (SHOW_WIND) {
         msg += "Wind:" + weatherClient.getDirectionText(0) + " @ " + weatherClient.getWindRounded(0) + getSpeedSymbol() + "  ";
       }
-      //line to show barometric pressure
+      // Line to show barometric pressure
       if (SHOW_PRESSURE) {
         msg += "Pressure:" + weatherClient.getPressure(0) + getPressureSymbol() + "  ";
       }
 
-      //Show sunrise and sunset times -- new feature
+      // Show sunrise and sunset times -- new feature
       msg += "Sunrise:" + weatherClient.getSunrise(0) + "/Sunset:" + weatherClient.getSunset(0) + "  ";
      
       msg += marqueeMessage + " ";
@@ -503,7 +503,7 @@ boolean athentication() {
 }
 
 void handlePull() {
-  getWeatherData(); // this will force a data pull for new weather
+  getWeatherData(); // This will force a data pull for new weather
   displayWeatherData();
 }
 
@@ -514,7 +514,7 @@ void handleSaveWideClock() {
   if (numberOfHorizontalDisplays >= 8) {
     Wide_Clock_Style = server.arg("wideclockformat");
     writeCityIds();
-    matrix.fillScreen(LOW); // show black
+    matrix.fillScreen(LOW); // Show black
   }
   redirectHome();
 }
@@ -526,7 +526,7 @@ void handleSaveNews() {
   NEWS_ENABLED = server.hasArg("displaynews");
   NEWS_API_KEY = server.arg("newsApiKey");
   NEWS_SOURCE = server.arg("newssource");
-  matrix.fillScreen(LOW); // show black
+  matrix.fillScreen(LOW); // Show black
   writeCityIds();
   newsClient.updateNews();
   redirectHome();
@@ -598,9 +598,9 @@ void handleLocations() {
   temp = server.arg("stationpassword");
   temp.toCharArray(www_password, sizeof(temp));
   weatherClient.setMetric(IS_METRIC);
-  matrix.fillScreen(LOW); // show black
+  matrix.fillScreen(LOW); // Show black
   writeCityIds();
-  getWeatherData(); // this will force a data pull for new weather
+  getWeatherData(); // This will force a data pull for new weather
   redirectHome();
 }
 
@@ -619,8 +619,8 @@ void handleForgetWifi() {
   if (!athentication()) {
     return server.requestAuthentication();
   }
-  //WiFiManager
-  //Local intialization. Once its business is done, there is no need to keep it around
+  // WiFiManager
+  // Local intialization. Once its business is done, there is no need to keep it around
   redirectHome();
   WiFiManager wifiManager;
   wifiManager.resetSettings();
@@ -679,7 +679,7 @@ void handleNewsConfigure() {
   form.replace("%NEWSCHECKED%", isNewsDisplayedChecked);
   form.replace("%NEWSKEY%", NEWS_API_KEY);
   form.replace("%NEWSSOURCE%", NEWS_SOURCE);
-  server.sendContent(form); //Send news form
+  server.sendContent(form); // Send news form
 
   sendFooter();
 
@@ -866,7 +866,7 @@ void handleConfigure() {
   themeOptions.replace(">" + String(themeColor) + "<", " selected>" + String(themeColor) + "<");
   form.replace("%THEME_OPTIONS%", themeOptions);
 
-  server.sendContent(form); //Send another chunk of the form
+  server.sendContent(form); // Send another chunk of the form
 
   form = FPSTR(CHANGE_FORM3);
   String isUseSecurityChecked = "";
@@ -899,14 +899,14 @@ void handleDisplay() {
 }
 
 //***********************************************************************
-void getWeatherData() //client function to send/receive GET request data.
+void getWeatherData() // Client function to send/receive GET request data.
 {
   digitalWrite(externalLight, LOW);
-  matrix.fillScreen(LOW); // show black
+  matrix.fillScreen(LOW); // Show black
   Serial.println();
 
   if (displayOn) {
-    // only pull the weather data if display is on
+    // Only pull the weather data if display is on
     if (firstEpoch != 0) {
       centerPrint(hourMinutes(true), true);
     } else {
@@ -1092,10 +1092,8 @@ void displayWeatherData() {
     html += "</p></div></div><hr>";
   }
 
-
   server.sendContent(String(html)); // spit out what we got
-  html = ""; // fresh start
-
+  html = ""; // Fresh start
 
   if (OCTOPRINT_ENABLED) {
     html = "<div class='w3-cell-row'><b>OctoPrint Status:</b> ";
@@ -1226,7 +1224,7 @@ String getPressureSymbol()
   return rtnValue;
 }
 
-// converts the dBm to a range between 0 and 100%
+// Converts the dBm to a range between 0 and 100%
 int8_t getWifiQuality() {
   int32_t dbm = WiFi.RSSI();
   if (dbm <= -100) {
@@ -1275,11 +1273,11 @@ void enableDisplay(boolean enable) {
   if (enable) {
     if (getMinutesFromLastDisplay() >= minutesBetweenDataRefresh) {
       // The display has been off longer than the minutes between refresh -- need to get fresh data
-      lastEpoch = 0; // this should force a data pull of the weather
-      displayOffEpoch = 0;  // reset
+      lastEpoch = 0; // This should force a data pull of the weather
+      displayOffEpoch = 0;  // Reset
     }
     matrix.shutdown(false);
-    matrix.fillScreen(LOW); // show black
+    matrix.fillScreen(LOW); // Show black
     Serial.println("Display was turned ON: " + now());
   } else {
     matrix.shutdown(true);
@@ -1291,7 +1289,7 @@ void enableDisplay(boolean enable) {
 // Toggle on and off the display if user defined times
 void checkDisplay() {
   if (timeDisplayTurnsOn == "" || timeDisplayTurnsOff == "") {
-    return; // nothing to do
+    return; // Nothing to do
   }
   String currentTime = TimeDB.zeroPad(hour()) + ":" + TimeDB.zeroPad(minute());
 
@@ -1424,7 +1422,7 @@ void readCityIds() {
     if (line.indexOf("refreshRate=") >= 0) {
       minutesBetweenDataRefresh = line.substring(line.lastIndexOf("refreshRate=") + 12).toInt();
       if (minutesBetweenDataRefresh == 0) {
-        minutesBetweenDataRefresh = 15; // can't be zero
+        minutesBetweenDataRefresh = 15; // Can't be zero
       }
       Serial.println("minutesBetweenDataRefresh=" + String(minutesBetweenDataRefresh));
     }
@@ -1561,7 +1559,7 @@ void readCityIds() {
 }
 
 void scrollMessage(String msg) {
-  msg += " "; // add a space at the end
+  msg += " "; // Add a space at the end
   for ( int i = 0 ; i < width * msg.length() + matrix.width() - 1 - spacer; i++ ) {
     if (WEBSERVER_ENABLED) {
       server.handleClient();
@@ -1575,7 +1573,7 @@ void scrollMessage(String msg) {
 
     int letter = i / width;
     int x = (matrix.width() - 1) - i % width;
-    int y = (matrix.height() - 8) / 2; // center the text vertically
+    int y = (matrix.height() - 8) / 2; // Center the text vertically
 
     while ( x + width - spacer >= 0 && letter >= 0 ) {
       if ( letter < msg.length() ) {
@@ -1607,7 +1605,7 @@ void drawPiholeGraph() {
     totalRows = 0;
   }
 
-  // get the high value for the sample that will be on the screen
+  // Get the high value for the sample that will be on the screen
   for (int inx = count; inx >= totalRows; inx--) {
     if (piholeClient.getBlockedAds()[inx] > high) {
       high = (int)piholeClient.getBlockedAds()[inx];
@@ -1655,12 +1653,10 @@ void centerPrint(String msg, boolean extraStuff) {
       int numberOfLightPixels = (printerClient.getProgressCompletion().toFloat() / float(100)) * (matrix.width() - 1);
       matrix.drawFastHLine(0, 7, numberOfLightPixels, HIGH);
     }
-    
   }
   
   matrix.setCursor(x, 0);
   matrix.print(msg);
-
   matrix.write();
 }
 
