@@ -1,25 +1,23 @@
 /** The MIT License (MIT)
 
-Copyright (c) 2018 David Payne
+  Copyright (c) 2018 David Payne
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+  associated documentation files (the "Software"), to deal in the Software without restriction, including
+  without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+  following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+  The above copyright notice and this permission notice shall be included in all copies or substantial
+  portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+  LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
+  EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+  IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+  USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+
 
 #include "OpenWeatherMapClient.h"
 #include "math.h"
@@ -41,14 +39,14 @@ void OpenWeatherMapClient::updateWeather() {
     Serial.println(weathers[0].error);
     return;
   }
-  //String apiGetData = "GET /data/2.5/group?id=" + myCityIDs + "&units=" + units + "&cnt=1&APPID=" + myApiKey + " HTTP/1.1";
+
   String apiGetData = "GET /data/2.5/weather?id=" + myCityIDs + "&units=" + units + "&APPID=" + myApiKey + " HTTP/1.1";
 
   Serial.println("Getting Weather Data");
   Serial.println(apiGetData);
   weathers[0].cached = false;
   weathers[0].error = "";
-  if (weatherClient.connect(servername, 80)) {  //starts client connection, checks for connection
+  if (weatherClient.connect(servername, 80)) {                                 // Starts client connection, checks for connection
     weatherClient.println(apiGetData);
     weatherClient.println("Host: " + String(servername));
     weatherClient.println("User-Agent: ArduinoWiFi/1.1");
@@ -56,18 +54,17 @@ void OpenWeatherMapClient::updateWeather() {
     weatherClient.println();
   } 
   else {
-    Serial.println("connection for weather data failed"); //error message if no client connect
+    Serial.println("connection for weather data failed");                      // Error message if no client connect
     Serial.println();
     weathers[0].error = "Connection for weather data failed";
     return;
   }
 
-  while(weatherClient.connected() && !weatherClient.available()) delay(1); //waits for data
+  while(weatherClient.connected() && !weatherClient.available()) delay(1);     // Waits for data
  
   Serial.println("Waiting for data");
 
-  // Check HTTP status
-  char status[32] = {0};
+  char status[32] = {0};                                                       // Check HTTP status
   weatherClient.readBytesUntil('\r', status, sizeof(status));
   Serial.println("Response Header: " + String(status));
   if (strcmp(status, "HTTP/1.1 200 OK") != 0) {
@@ -95,7 +92,7 @@ void OpenWeatherMapClient::updateWeather() {
     return;
   }
 
-  weatherClient.stop(); //stop client
+  weatherClient.stop();                // Stop client
 
   if (root.measureLength() <= 150) {
     Serial.println("Error Does not look like we got the data.  Size: " + String(root.measureLength()));
@@ -104,27 +101,7 @@ void OpenWeatherMapClient::updateWeather() {
     Serial.println("Error: " + weathers[0].error);
     return;
   }
-  //int count = root["cnt"];
 
-  //for (int inx = 0; inx < count; inx++) {
-    // weathers[inx].lat = (const char*)root["list"][inx]["coord"]["lat"];
-    // weathers[inx].lon = (const char*)root["list"][inx]["coord"]["lon"];
-    // weathers[inx].dt = (const char*)root["list"][inx]["dt"];
-    // weathers[inx].city = (const char*)root["list"][inx]["name"];
-    // weathers[inx].country = (const char*)root["list"][inx]["sys"]["country"];
-    // weathers[inx].temp = (const char*)root["list"][inx]["main"]["temp"];
-    // weathers[inx].humidity = (const char*)root["list"][inx]["main"]["humidity"];
-    // weathers[inx].condition = (const char*)root["list"][inx]["weather"][0]["main"];
-    // weathers[inx].wind = (const char*)root["list"][inx]["wind"]["speed"];
-    // weathers[inx].weatherId = (const char*)root["list"][inx]["weather"][0]["id"];
-    // weathers[inx].description = (const char*)root["list"][inx]["weather"][0]["description"];
-    // weathers[inx].icon = (const char*)root["list"][inx]["weather"][0]["icon"];
-    // weathers[inx].pressure = (const char*)root["list"][inx]["main"]["pressure"];
-    // weathers[inx].direction = (const char*)root["list"][inx]["wind"]["deg"];
-    // weathers[inx].high = (const char*)root["list"][inx]["main"]["temp_max"];
-    // weathers[inx].low = (const char*)root["list"][inx]["main"]["temp_min"];
-    // weathers[inx].timeZone = (const char*)root["list"][inx]["sys"]["timezone"];
-    
     int inx = 0;
 
     weathers[inx].lat = (const char*)root["coord"]["lat"];
@@ -149,17 +126,14 @@ void OpenWeatherMapClient::updateWeather() {
     weathers[inx].sunset = (const char*)root["sys"]["sunset"];
     weathers[inx].cloudcover = (const char*)root["clouds"]["all"];
 
-
-
     if (units == "metric") {
-      // convert to kph from m/s
-      float f = (weathers[inx].wind.toFloat() * 3.6);
+      float f = (weathers[inx].wind.toFloat() * 3.6);                          // Convert to kph from m/s
       weathers[inx].wind = String(f);
     }
 
     if (units != "metric")
     {
-      float p = (weathers[inx].pressure.toFloat() * 0.0295301); //convert millibars to inches
+      float p = (weathers[inx].pressure.toFloat() * 0.0295301);                // Convert millibars to inches
       weathers[inx].pressure = String(p);
     }
     
@@ -178,8 +152,6 @@ void OpenWeatherMapClient::updateWeather() {
     Serial.println("icon: " + weathers[inx].icon);
     Serial.println("timezone: " + String(getTimeZone(inx)));
     Serial.println();
-    
-  //}
 }
 
 String OpenWeatherMapClient::roundValue(String value) {
@@ -252,13 +224,11 @@ String OpenWeatherMapClient::getWind(int index) {
   return weathers[index].wind;
 }
 
-String OpenWeatherMapClient::getDirection(int index)
-{
+String OpenWeatherMapClient::getDirection(int index) {
   return weathers[index].direction;
 }
 
-String OpenWeatherMapClient::getDirectionRounded(int index)
-{
+String OpenWeatherMapClient::getDirectionRounded(int index) {
   return roundValue(getDirection(index));
 }
 
@@ -281,28 +251,23 @@ String OpenWeatherMapClient::getDescription(int index) {
   return weathers[index].description;
 }
 
-String OpenWeatherMapClient::getPressure(int index)
-{
+String OpenWeatherMapClient::getPressure(int index) {
   return weathers[index].pressure;
 }
 
-String OpenWeatherMapClient::getHigh(int index)
-{
+String OpenWeatherMapClient::getHigh(int index) {
   return roundValue(weathers[index].high);
 }
 
-String OpenWeatherMapClient::getLow(int index)
-{
+String OpenWeatherMapClient::getLow(int index) {
   return roundValue(weathers[index].low);
 }
 
-String OpenWeatherMapClient::getFeelslike(int index)
-{
+String OpenWeatherMapClient::getFeelslike(int index) {
   return roundValue(weathers[index].feelslike);
 }
 
-String OpenWeatherMapClient::getCloudcover(int index)
-{
+String OpenWeatherMapClient::getCloudcover(int index) {
   return roundValue(weathers[index].cloudcover);
 }
 
@@ -356,6 +321,7 @@ String OpenWeatherMapClient::getWeekDay(int index, float offset) {
   }
   return rtnValue;
 }
+
 String OpenWeatherMapClient::getSunrise(int index) {
   String rtnValue = "";
   
@@ -375,6 +341,7 @@ String OpenWeatherMapClient::getSunrise(int index) {
 
   return rtnValue;
 }
+
 String OpenWeatherMapClient::getSunset(int index) {
   String rtnValue = "";
 
@@ -394,6 +361,7 @@ String OpenWeatherMapClient::getSunset(int index) {
 
   return rtnValue;
 }
+
 int OpenWeatherMapClient::getTimeZone(int index) {
   int rtnValue = weathers[index].timeZone.toInt();
   if (rtnValue != 0) {
