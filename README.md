@@ -32,16 +32,16 @@ The ESP8266 Core 3.0.2 uses the newer FS (file system) that may require a fresh 
 
 ## Required Parts:
 * Wemos D1 Mini: https://amzn.to/3tMl81U
-* Dot Matrix Module: https://amzn.to/2HtnQlD  
+* Dot Matrix Module: https://amzn.to/2HtnQlD
 
-Note: Using the links provided here help to support these types of projects. Thank you for the support.  
+Note: Using the links provided here help to support these types of projects. Thank you for the support.
 
 ## Wiring for the Wemos D1 Mini to the Dot Matrix Display
-CLK -> D5 (SCK)  
-CS  -> D6  
-DIN -> D7 (MOSI)  
-VCC -> 5V+  
-GND -> GND-  
+CLK -> D5 (SCK)
+CS  -> D6
+DIN -> D7 (MOSI)
+VCC -> 5V+
+GND -> GND-
 
 ![Marquee Scroller Wiring](/images/marquee_scroller_pins.png)  
 
@@ -106,19 +106,19 @@ The Clock will display the time of the City selected for the weather.
 </p>
 
 ## Donation or Tip
-Please do not feel obligated, but donations and tips are warmly welcomed.  I have added the donation button at the request of a few people that wanted to contribute and show appreciation.  Thank you, and enjoy the application and project.  
+Please do not feel obligated, but donations and tips are warmly welcomed.  I have added the donation button at the request of a few people that wanted to contribute and show appreciation.  Thank you, and enjoy the application and project.
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=A82AT6FLN2MPY)
 
-Or -- you can buy me something from my Amazon Wishlist: https://www.amazon.com/hz/wishlist/ls/GINC2PHRNEY3  
+Or -- you can buy me something from my Amazon Wishlist: https://www.amazon.com/hz/wishlist/ls/GINC2PHRNEY3
 
 ## Contributors
-David Payne  
-Nathan Glaus  
-Daniel Eichhorn -- Author of the TimeClient class (in older versions)  
-yanvigdev  
-nashiko-s  
-magnum129  
+David Payne
+Nathan Glaus
+Daniel Eichhorn -- Author of the TimeClient class (in older versions)
+yanvigdev
+nashiko-s
+magnum129
 
 Contributing to this software is warmly welcomed. You can do this basically by forking from master, committing modifications and then making a pulling requests against the latest DEV branch to be reviewed (follow the links above for operating guide). Detailed comments are encouraged. Adding change log and your contact into file header is encouraged. Thanks for your contribution.
 
@@ -126,5 +126,5 @@ When considering making a code contribution, please keep in mind the following g
 * User should not be required to edit the Settings.h file to compile and run.  This means the feature should be simple enough to manage through the web interface.
 * Changes should always support the recommended hardware (links above).
 
-![Marquee Scroller](/images/5d7f02ccbf01125cabbf246f97f2ead1_preview_featured.jpg)  
+![Marquee Scroller](/images/5d7f02ccbf01125cabbf246f97f2ead1_preview_featured.jpg)
 ![Marquee Parts](/images/1ffa0c835554d280258c13be5513c4fe_preview_featured.jpg)
