@@ -175,3 +175,12 @@ String TimeDB::zeroPad(int number) {
     return String(number);
   }
 }
+
+
+String TimeDB::spacePad(int number) {
+  if (number < 10) {
+    return " " + String(number);
+  } else {
+    return String(number);
+  }
+}
