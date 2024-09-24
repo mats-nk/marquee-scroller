@@ -1257,17 +1257,18 @@ void enableDisplay(boolean enable) {
 // Toggle on and off the display if user defined times
 void checkDisplay() {
   if (timeDisplayTurnsOn == "" || timeDisplayTurnsOff == "") {
-    return;  // Nothing to do
+    enableDisplay(true);
+    return;
   }
+
   String currentTime = TimeDB.zeroPad(hour()) + ":" + TimeDB.zeroPad(minute());
 
-  if (currentTime == timeDisplayTurnsOn && !displayOn) {
+  if (currentTime > timeDisplayTurnsOn && < timeDisplayTurnsOff) {
     Serial.println("Time to turn display on: " + currentTime);
     flashLED(1, 500);
     enableDisplay(true);
   }
-
-  if (currentTime == timeDisplayTurnsOff && displayOn) {
+  else
     Serial.println("Time to turn display off: " + currentTime);
     flashLED(2, 500);
     enableDisplay(false);
