@@ -5,3 +5,4 @@ MyConfig.txt
 
 # Ignore build subfolders
 **/marquee/build/
+
